@@ -48,7 +48,7 @@
       background:radial-gradient(ellipse at 50% 55%,rgba(45,106,46,.16) 0%,transparent 68%);
     }
     .hero-logo{
-      width:min(300px,60vw);height:auto;
+      width:min(480px,75vw);height:auto;
       margin-bottom:36px;
       filter:drop-shadow(0 0 60px rgba(245,168,0,.25)) drop-shadow(0 0 20px rgba(45,106,46,.3));
       animation:logoPulse 4s ease-in-out infinite;
@@ -237,6 +237,27 @@
     .partner-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
     .partner-tags span{color:var(--muted);font-size:.75rem;font-weight:700;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);padding:4px 10px;border-radius:6px;}
 
+    /* ── PROJECT CARDS ── */
+    .project-card{display:flex;flex-direction:column;align-items:center;background:rgba(20,0,0,.5);border:1px solid rgba(232,37,26,.12);border-radius:var(--radius);padding:28px;text-decoration:none;transition:transform .2s,border-color .2s,box-shadow .2s;}
+    .project-card:hover{transform:translateY(-5px);border-color:rgba(255,184,0,.4);box-shadow:0 12px 40px rgba(255,184,0,.15);}
+    .project-card img{max-height:120px;width:auto;max-width:100%;object-fit:contain;margin-bottom:14px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));}
+    .project-card-label{font-weight:800;font-size:.9rem;color:var(--studio-yellow);text-align:center;letter-spacing:1px;}
+
+    /* ── SALLE ROUGE GRID ── */
+    @media(max-width:768px){.salle-grid{grid-template-columns:1fr!important;}}
+
+    /* ── NEWSLETTER ── */
+    .newsletter-card{background:var(--card);border:1px solid rgba(245,168,0,.1);border-radius:var(--radius);overflow:hidden;transition:transform .2s,border-color .2s;}
+    .newsletter-card:hover{transform:translateY(-4px);border-color:rgba(245,168,0,.25);}
+    .newsletter-thumb{background:linear-gradient(135deg,#1a1a00,#1C1200);padding:32px;text-align:center;border-bottom:1px solid rgba(245,168,0,.08);}
+    .newsletter-thumb-inner{background:rgba(245,168,0,.06);border:1px solid rgba(245,168,0,.12);border-radius:10px;padding:20px;}
+    .newsletter-body{padding:18px 20px;}
+    .newsletter-body h4{font-weight:800;font-size:.97rem;margin-bottom:5px;}
+    .newsletter-body p{color:var(--muted);font-size:.83rem;line-height:1.55;}
+
+    /* ── PULSE ANIMATION ── */
+    @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(76,175,80,.4);}50%{box-shadow:0 0 0 8px rgba(76,175,80,0);}}
+
     /* ── FORM SECTIONS ── */
     .form-section-title{font-size:.7rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--voix-light);margin:20px 0 12px;padding-top:16px;border-top:1px solid rgba(30,107,48,.2);}
     .form-section-title:first-child{border-top:none;margin-top:0;padding-top:0;}
@@ -257,11 +278,13 @@
 <nav>
   <div class="nav-logo"><img src="scfpa-logo.png" alt="SCFPA"/></div>
   <ul class="nav-links" id="nav-links">
-    <li><a href="#events"  data-fr="Événements"    data-en="Events">Événements</a></li>
-    <li><a href="#voix"    data-fr="Voix Croisées" data-en="Voix Croisées">Voix Croisées</a></li>
-    <li><a href="#camp"    data-fr="Camp Été"       data-en="Summer Camp">Camp Été</a></li>
-    <li><a href="#studio"  data-fr="Studio"         data-en="Studio">Studio</a></li>
-    <li><a href="#contact" data-fr="Contact"        data-en="Contact">Contact</a></li>
+    <li><a href="#events"       data-fr="Événements"    data-en="Events">Événements</a></li>
+    <li><a href="#voix"         data-fr="Voix Croisées" data-en="Voix Croisées">Voix Croisées</a></li>
+    <li><a href="#camp"         data-fr="Camp Été"       data-en="Summer Camp">Camp Été</a></li>
+    <li><a href="#studio"       data-fr="Studio"         data-en="Studio">Studio</a></li>
+    <li><a href="#salle-rouge"  data-fr="Salle Rouge"    data-en="Salle Rouge">Salle Rouge</a></li>
+    <li><a href="#newsletter"   data-fr="Infolettre"     data-en="Newsletter">Infolettre</a></li>
+    <li><a href="#contact"      data-fr="Contact"        data-en="Contact">Contact</a></li>
     <li class="lang-toggle">
       <button class="lang-btn active" onclick="setLang('fr')">FR</button>
       <button class="lang-btn"        onclick="setLang('en')">EN</button>
@@ -300,12 +323,18 @@
     <div class="divider dg"></div>
     <p class="s-desc" data-fr="Spectacles, ateliers, projections et bien plus — restez connectés à la culture francophone." data-en="Shows, workshops, screenings and more — stay connected to francophone culture.">Spectacles, ateliers, projections et bien plus — restez connectés à la culture francophone.</p>
 
+    <!-- deadline banner -->
+    <div style="background:linear-gradient(135deg,rgba(30,107,48,.25),rgba(15,61,26,.4));border:1px solid rgba(76,175,80,.25);border-radius:var(--radius);padding:14px 20px;display:flex;align-items:center;gap:12px;margin-bottom:24px;">
+      <div style="width:9px;height:9px;border-radius:50%;background:var(--voix-light);flex-shrink:0;animation:pulse 2s infinite;"></div>
+      <p style="font-size:.9rem;"><strong style="color:var(--voix-light);" data-fr="Voix Croisées — Fin des candidatures :" data-en="Voix Croisées — Application Deadline:">Voix Croisées — Fin des candidatures :</strong> <span data-fr="vendredi 3 juillet 2026" data-en="Friday, July 3, 2026">vendredi 3 juillet 2026</span></p>
+    </div>
+
     <div class="event-list">
       <div class="event-item reveal">
-        <div class="edb"><div class="day">28</div><div class="month" data-fr="Juin" data-en="June">Juin</div></div>
+        <div class="edb" style="background:linear-gradient(135deg,var(--orange),var(--gold));"><div class="day">6</div><div class="month" data-fr="Juil" data-en="July">Juil</div></div>
         <div class="event-info">
-          <h4 data-fr="Ouverture – Camp FrancoFun" data-en="Opening – Camp FrancoFun">Ouverture – Camp FrancoFun</h4>
-          <p data-fr="Prince Albert · Journée entière" data-en="Prince Albert · Full day">Prince Albert · Journée entière</p>
+          <h4 data-fr="Début — Camp FrancoFun" data-en="Start — Camp FrancoFun">Début — Camp FrancoFun</h4>
+          <p data-fr="Prince Albert · Camp d'été jeunesse" data-en="Prince Albert · Youth Summer Camp">Prince Albert · Camp d'été jeunesse</p>
         </div>
         <div class="ebadge" style="color:var(--orange);" data-fr="Camp" data-en="Camp">Camp</div>
       </div>
@@ -318,13 +347,25 @@
         <div class="ebadge" style="color:var(--voix-light);">Voix Croisées</div>
       </div>
       <div class="event-item reveal">
-        <div class="edb" style="background:linear-gradient(135deg,var(--orange),var(--gold));"><div class="day">15</div><div class="month" data-fr="Oct" data-en="Oct">Oct</div></div>
+        <div class="edb" style="background:linear-gradient(135deg,var(--green),var(--green-light));"><div class="day">6</div><div class="month" data-fr="Nov" data-en="Nov">Nov</div></div>
         <div class="event-info">
-          <h4 data-fr="Voix Croisées — Segment Québec" data-en="Voix Croisées — Quebec Segment">Voix Croisées — Segment Québec</h4>
-          <p data-fr="MRC de Portneuf, QC · 15–20 octobre 2026" data-en="MRC de Portneuf, QC · Oct 15–20, 2026">MRC de Portneuf, QC · 15–20 octobre 2026</p>
+          <h4>Rendez-Vous Fransaskois</h4>
+          <p data-fr="Prince Albert · 6–8 novembre 2026" data-en="Prince Albert · Nov 6–8, 2026">Prince Albert · 6–8 novembre 2026</p>
         </div>
-        <div class="ebadge" style="color:var(--voix-light);">Voix Croisées</div>
+        <div class="ebadge" data-fr="Festival" data-en="Festival">Festival</div>
       </div>
+      <div class="event-item reveal">
+        <div class="edb" style="background:linear-gradient(135deg,var(--studio-red),var(--studio-yellow));"><div class="day">29</div><div class="month" data-fr="Nov" data-en="Nov">Nov</div></div>
+        <div class="event-info">
+          <h4 data-fr="Souper de Noël — La Légende de Calamity Jane" data-en="Christmas Dinner — La Légende de Calamity Jane">Souper de Noël — La Légende de Calamity Jane</h4>
+          <p data-fr="Prince Albert · Souper spectacle" data-en="Prince Albert · Dinner show">Prince Albert · Souper spectacle</p>
+        </div>
+        <div class="ebadge" data-fr="Spectacle" data-en="Show">Spectacle</div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-bottom:40px;">
+      <a href="events.html" class="btn btn-outline" data-fr="Voir toute la programmation 2026–2027" data-en="View Full 2026–2027 Programming">Voir toute la programmation 2026–2027</a>
     </div>
 
     <div class="calendar-embed reveal">
@@ -589,11 +630,114 @@
       <div class="studio-service reveal"><h4 data-fr="Production vidéo" data-en="Video Production">Production vidéo</h4><p data-fr="Tournage professionnel, cyclorama, éclairage de scène, caméras 4K." data-en="Professional filming, cyclorama, stage lighting, 4K cameras.">Tournage professionnel, cyclorama, éclairage de scène, caméras 4K.</p></div>
       <div class="studio-service reveal"><h4 data-fr="Mixage et Mastering" data-en="Mixing and Mastering">Mixage et Mastering</h4><p data-fr="Suite de post-production complète pour donner vie à vos projets sonores." data-en="Complete post-production suite to bring your audio projects to life.">Suite de post-production complète pour donner vie à vos projets sonores.</p></div>
       <div class="studio-service reveal"><h4 data-fr="Montage vidéo" data-en="Video Editing">Montage vidéo</h4><p data-fr="Poste de montage dédié avec logiciels d'édition de pointe." data-en="Dedicated editing workstation with cutting-edge software.">Poste de montage dédié avec logiciels d'édition de pointe.</p></div>
-      <div class="studio-service reveal"><h4 data-fr="Instruments" data-en="Instruments">Instruments</h4><p data-fr="Piano, guitares, basse, batterie et plus — tout disponible sur place." data-en="Piano, guitars, bass, drums and more — all available on-site.">Piano, guitares, basse, batterie et plus — tout disponible sur place.</p></div>
       <div class="studio-service reveal"><h4 data-fr="Location d'espace" data-en="Space Rental">Location d'espace</h4><p data-fr="Disponible pour groupes, artistes et organismes communautaires." data-en="Available for groups, artists and community organizations.">Disponible pour groupes, artistes et organismes communautaires.</p></div>
+    </div>
+
+    <!-- PROJECTS -->
+    <div style="margin-top:56px;">
+      <div class="s-label" style="color:var(--studio-yellow);" data-fr="Productions" data-en="Productions">Productions</div>
+      <h3 class="s-title" style="font-size:clamp(1.8rem,3vw,2.8rem);color:var(--studio-yellow);" data-fr="Nos projets" data-en="Our Projects">Nos projets</h3>
+      <div class="divider dr"></div>
+      <p class="s-desc" data-fr="Des productions originales nées du Studio Gaëtan Benoît." data-en="Original productions born from Studio Gaëtan Benoît.">Des productions originales nées du Studio Gaëtan Benoît.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;">
+        <a href="https://www.youtube.com/@StudioGaetanBenoitPA" target="_blank" class="project-card reveal">
+          <img src="pop-logo.png" alt="POP"/>
+          <div class="project-card-label">POP</div>
+        </a>
+        <a href="https://www.youtube.com/@StudioGaetanBenoitPA" target="_blank" class="project-card reveal">
+          <img src="prends-logo.png" alt="Prends ta position"/>
+          <div class="project-card-label" data-fr="Prends ta position" data-en="Prends ta position">Prends ta position</div>
+        </a>
+      </div>
     </div>
   </div>
 </section>
+
+<!-- SALLE ROUGE -->
+<section id="salle-rouge" style="background:linear-gradient(180deg,rgba(180,20,20,.05) 0%,transparent 100%);border-top:1px solid rgba(180,20,20,.15);">
+  <div class="inner">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;" class="salle-grid">
+      <div class="reveal">
+        <div class="s-label" style="color:#E84040;" data-fr="Location d'espace" data-en="Space Rental">Location d'espace</div>
+        <h2 class="s-title" style="color:#fff;" data-fr="La Salle Rouge" data-en="La Salle Rouge">La Salle Rouge</h2>
+        <div class="divider" style="background:linear-gradient(90deg,#E84040,var(--gold));"></div>
+        <p class="s-desc" data-fr="Un espace polyvalent au cœur de Prince Albert, disponible à la location pour vos événements, réunions et activités communautaires." data-en="A versatile space in the heart of Prince Albert, available to rent for your events, meetings and community activities.">Un espace polyvalent au cœur de Prince Albert, disponible à la location pour vos événements, réunions et activités communautaires.</p>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px;">
+          <div style="background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:14px 16px;">
+            <div style="font-size:.68rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#E84040;margin-bottom:4px;" data-fr="Capacité" data-en="Capacity">Capacité</div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--gold);">60</div>
+            <div style="font-size:.8rem;color:var(--muted);" data-fr="personnes" data-en="people">personnes</div>
+          </div>
+          <div style="background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:14px 16px;">
+            <div style="font-size:.68rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#E84040;margin-bottom:4px;" data-fr="Équipement" data-en="Equipment">Équipement</div>
+            <div style="font-size:.85rem;color:var(--text);line-height:1.6;" data-fr="Télévision<br>Canapé<br>Chaises & tables" data-en="Television<br>Couch<br>Chairs & tables">Télévision<br>Canapé<br>Chaises & tables</div>
+          </div>
+        </div>
+
+        <p style="font-size:.88rem;color:var(--muted);margin-bottom:20px;" data-fr="Pour réserver la salle, écrivez-nous à <a href='mailto:scfpa@sasktel.net' style='color:var(--gold);'>scfpa@sasktel.net</a> ou remplissez le formulaire de contact." data-en="To book the room, email us at <a href='mailto:scfpa@sasktel.net' style='color:var(--gold);'>scfpa@sasktel.net</a> or fill out the contact form.">Pour réserver la salle, écrivez-nous à <a href="mailto:scfpa@sasktel.net" style="color:var(--gold);">scfpa@sasktel.net</a> ou remplissez le formulaire de contact.</p>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <a href="mailto:scfpa@sasktel.net" class="btn btn-gold" data-fr="Réserver par courriel" data-en="Book by Email">Réserver par courriel</a>
+          <a href="#contact" class="btn btn-outline" data-fr="Formulaire de contact" data-en="Contact Form">Formulaire de contact</a>
+        </div>
+      </div>
+
+      <div class="reveal" style="text-align:center;">
+        <img src="salle-rouge-logo.png" alt="La Salle Rouge" style="max-width:280px;width:100%;height:auto;filter:drop-shadow(0 8px 30px rgba(232,64,64,.25));"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section id="newsletter" style="background:linear-gradient(180deg,rgba(45,106,46,.05) 0%,transparent 100%);border-top:1px solid rgba(245,168,0,.08);">
+  <div class="inner">
+    <div class="s-label" style="color:var(--gold);" data-fr="Restez informés" data-en="Stay Informed">Restez informés</div>
+    <h2 class="s-title" data-fr="Infolettre — Le Ruisselet" data-en="Newsletter — Le Ruisselet">Infolettre — Le Ruisselet</h2>
+    <div class="divider dg"></div>
+    <p class="s-desc" data-fr="Téléchargez nos dernières infolettres ou feuilletez-les directement ici." data-en="Download our latest newsletters or browse them right here.">Téléchargez nos dernières infolettres ou feuilletez-les directement ici.</p>
+
+    <!-- Newsletter cards — add new PDFs here -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-bottom:40px;">
+
+      <!-- NEWSLETTER CARD — duplicate this block to add more -->
+      <div class="newsletter-card reveal">
+        <div class="newsletter-thumb">
+          <div class="newsletter-thumb-inner">
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--gold);">Le Ruisselet</div>
+            <div style="font-size:.78rem;color:var(--muted);margin-top:4px;">Mai 2026</div>
+          </div>
+        </div>
+        <div class="newsletter-body">
+          <h4 data-fr="Le Ruisselet — Mai 2026" data-en="Le Ruisselet — May 2026">Le Ruisselet — Mai 2026</h4>
+          <p data-fr="Nouvelles de la communauté, événements à venir et plus." data-en="Community news, upcoming events and more.">Nouvelles de la communauté, événements à venir et plus.</p>
+          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+            <a href="#" onclick="openPDF('Programmation 2026-2027 SCFPA.pdf'); return false;" class="btn btn-green" style="padding:8px 18px;font-size:.8rem;" data-fr="Lire" data-en="Read">Lire</a>
+            <a href="Programmation 2026-2027 SCFPA.pdf" download class="btn btn-outline" style="padding:8px 18px;font-size:.8rem;" data-fr="Télécharger" data-en="Download">Télécharger</a>
+          </div>
+        </div>
+      </div>
+      <!-- END NEWSLETTER CARD -->
+
+    </div>
+
+    <div style="text-align:center;">
+      <a href="https://forms.gle/kDmdYzQuCLJuqHWo8" target="_blank" class="btn btn-outline" data-fr="S'abonner à l'infolettre" data-en="Subscribe to Newsletter">S'abonner à l'infolettre</a>
+    </div>
+  </div>
+</section>
+
+<!-- PDF VIEWER MODAL -->
+<div id="pdf-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:600;align-items:center;justify-content:center;padding:16px;">
+  <div style="background:#0e1a0f;border:1px solid rgba(245,168,0,.2);border-radius:18px;width:100%;max-width:860px;height:90vh;display:flex;flex-direction:column;overflow:hidden;">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.07);">
+      <span id="pdf-title" style="font-weight:800;font-size:.95rem;"></span>
+      <button onclick="closePDF()" style="background:transparent;border:none;color:var(--text);font-size:1.3rem;cursor:pointer;padding:4px 10px;border-radius:8px;">✕</button>
+    </div>
+    <iframe id="pdf-frame" src="" style="flex:1;border:none;width:100%;"></iframe>
+  </div>
+</div>
 
 <!-- CONTACT -->
 <section id="contact">
@@ -820,6 +964,19 @@ function openModal(){document.getElementById('voix-modal').classList.add('open')
 function closeModal(){document.getElementById('voix-modal').classList.remove('open');document.body.style.overflow='';}
 function closeModalOutside(e){if(e.target===document.getElementById('voix-modal'))closeModal();}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+/* PDF MODAL */
+function openPDF(file){
+  document.getElementById('pdf-frame').src=file;
+  document.getElementById('pdf-title').textContent=file.replace('.pdf','');
+  const m=document.getElementById('pdf-modal');
+  m.style.display='flex';document.body.style.overflow='hidden';
+}
+function closePDF(){
+  document.getElementById('pdf-modal').style.display='none';
+  document.getElementById('pdf-frame').src='';
+  document.body.style.overflow='';
+}
 
 /* REVEAL */
 const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.1});
