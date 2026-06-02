@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SCFPA – Société Canadienne-Française de Prince Albert</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --green:#2D6A2E; --green-light:#4A9E3F;
+      --orange:#D4520A; --gold:#F5A800;
+      --dark:#0C0F0A; --card:#141910;
+      --text:#F2F0E8; --muted:#8A9080;
+      --radius:16px;
+      --studio-red:#E8251A; --studio-yellow:#FFB800;
+      --voix-deep:#0F3D1A; --voix-green:#1E6B30; --voix-light:#4CAF50;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'Inter',system-ui,sans-serif;background:var(--dark);color:var(--text);overflow-x:hidden;}
+
+    #bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+
+    /* ── NAV ── */
+    nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:12px 36px;background:rgba(12,15,10,0.9);backdrop-filter:blur(16px);border-bottom:1px solid rgba(245,168,0,.12);}
+    .nav-logo img{height:48px;width:auto;display:block;}
+    .nav-links{display:flex;gap:22px;list-style:none;align-items:center;}
+    .nav-links a{color:var(--text);text-decoration:none;font-size:.83rem;font-weight:700;letter-spacing:.4px;transition:color .2s;}
+    .nav-links a:hover{color:var(--gold);}
+    .lang-toggle{display:flex;gap:5px;margin-left:16px;}
+    .lang-btn{background:transparent;border:1.5px solid var(--muted);color:var(--muted);padding:3px 10px;border-radius:20px;cursor:pointer;font-size:.72rem;font-weight:800;transition:all .2s;font-family:inherit;}
+    .lang-btn.active{background:var(--gold);border-color:var(--gold);color:#0C0F0A;}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;}
+    .hamburger span{width:24px;height:2px;background:var(--text);border-radius:2px;}
+    @media(max-width:860px){
+      .hamburger{display:flex;}
+      .nav-links{position:fixed;top:0;right:-100%;width:min(280px,80vw);height:100vh;background:rgba(12,15,10,.97);backdrop-filter:blur(20px);flex-direction:column;align-items:flex-start;padding:80px 28px 28px;transition:right .3s;border-left:1px solid rgba(245,168,0,.15);gap:16px;}
+      .nav-links.open{right:0;}
+      .lang-toggle{margin-left:0;}
+    }
+
+    /* ── HERO ── */
+    .hero{
+      position:relative;z-index:1;min-height:100vh;
+      display:flex;flex-direction:column;
+      align-items:center;justify-content:center;
+      text-align:center;padding:120px 24px 80px;
+      background:radial-gradient(ellipse at 50% 55%,rgba(45,106,46,.16) 0%,transparent 68%);
+    }
+    .hero-logo{
+      width:min(300px,60vw);height:auto;
+      margin-bottom:36px;
+      filter:drop-shadow(0 0 60px rgba(245,168,0,.25)) drop-shadow(0 0 20px rgba(45,106,46,.3));
+      animation:logoPulse 4s ease-in-out infinite;
+    }
+    @keyframes logoPulse{
+      0%,100%{filter:drop-shadow(0 0 60px rgba(245,168,0,.25)) drop-shadow(0 0 20px rgba(45,106,46,.3));}
+      50%{filter:drop-shadow(0 0 90px rgba(245,168,0,.4)) drop-shadow(0 0 35px rgba(45,106,46,.45));}
+    }
+    .hero-location{
+      font-size:.72rem;font-weight:800;letter-spacing:4px;text-transform:uppercase;
+      color:var(--muted);margin-bottom:16px;
+    }
+    .hero h1{
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(2.4rem,6vw,5rem);
+      line-height:1;margin-bottom:12px;letter-spacing:2px;
+    }
+    .hero h1 .gold{background:linear-gradient(90deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .hero h1 .grn{background:linear-gradient(90deg,var(--green-light),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .hero-sub{font-size:clamp(.88rem,1.8vw,1.1rem);color:var(--muted);max-width:520px;margin:0 auto 32px;line-height:1.65;}
+    .hero-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:28px;}
+    .hero-socials{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+    .social-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:30px;padding:6px 14px;font-size:.76rem;font-weight:700;color:var(--muted);text-decoration:none;transition:all .2s;}
+    .social-pill:hover{border-color:var(--gold);color:var(--gold);}
+    .scroll-down{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);color:var(--muted);font-size:.66rem;letter-spacing:3px;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:4px;animation:bob 2.2s infinite;}
+    @keyframes bob{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(7px);}}
+
+    /* ── BUTTONS ── */
+    .btn{display:inline-block;padding:12px 28px;border-radius:50px;font-weight:800;font-size:.88rem;text-decoration:none;cursor:pointer;border:none;font-family:inherit;transition:transform .2s,box-shadow .2s;}
+    .btn:hover{transform:translateY(-3px);}
+    .btn-gold{background:linear-gradient(135deg,var(--gold),var(--orange));color:#0C0F0A;}
+    .btn-gold:hover{box-shadow:0 8px 26px rgba(245,168,0,.4);}
+    .btn-green{background:linear-gradient(135deg,var(--green),var(--green-light));color:#fff;}
+    .btn-green:hover{box-shadow:0 8px 26px rgba(45,106,46,.4);}
+    .btn-outline{background:transparent;border:2px solid var(--gold);color:var(--gold);}
+    .btn-outline:hover{background:var(--gold);color:#0C0F0A;}
+    .btn-voix{background:linear-gradient(135deg,var(--voix-green),var(--voix-light));color:#fff;}
+    .btn-voix:hover{box-shadow:0 8px 26px rgba(30,107,48,.5);}
+    .btn-studio{background:var(--studio-yellow);color:#0C0F0A;font-weight:900;}
+    .btn-studio:hover{box-shadow:0 8px 26px rgba(255,184,0,.4);}
+    .btn-red{background:linear-gradient(135deg,var(--studio-red),#c01810);color:#fff;}
+    .btn-red:hover{box-shadow:0 8px 26px rgba(232,37,26,.4);}
+
+    /* ── SECTIONS ── */
+    section{position:relative;z-index:1;padding:88px 24px;}
+    .inner{max-width:1080px;margin:0 auto;}
+    .s-label{font-size:.68rem;font-weight:800;letter-spacing:4px;text-transform:uppercase;margin-bottom:8px;}
+    .s-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,5vw,3.8rem);line-height:1;margin-bottom:12px;letter-spacing:1px;}
+    .s-desc{font-size:.97rem;color:var(--muted);line-height:1.7;max-width:640px;margin-bottom:36px;}
+    .divider{width:52px;height:4px;border-radius:4px;margin:10px 0 22px;}
+    .dg{background:linear-gradient(90deg,var(--gold),var(--orange));}
+    .dv{background:linear-gradient(90deg,var(--voix-green),var(--voix-light));}
+    .dr{background:linear-gradient(90deg,var(--studio-red),var(--studio-yellow));}
+
+    /* ── EVENTS ── */
+    #events{background:linear-gradient(180deg,rgba(45,106,46,.06) 0%,transparent 100%);}
+    .event-list{display:flex;flex-direction:column;gap:12px;margin-bottom:32px;}
+    .event-item{display:flex;align-items:center;gap:18px;background:var(--card);border:1px solid rgba(245,168,0,.1);border-radius:var(--radius);padding:18px 24px;transition:transform .2s,border-color .2s;cursor:pointer;}
+    .event-item:hover{transform:translateX(5px);border-color:rgba(245,168,0,.3);}
+    .edb{min-width:58px;text-align:center;border-radius:10px;padding:9px 7px;background:linear-gradient(135deg,var(--green),var(--orange));}
+    .edb .day{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;line-height:1;}
+    .edb .month{font-size:.62rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;opacity:.9;}
+    .event-info h4{font-size:.97rem;font-weight:800;margin-bottom:3px;}
+    .event-info p{color:var(--muted);font-size:.82rem;}
+    .ebadge{margin-left:auto;border-radius:20px;padding:3px 12px;font-size:.72rem;font-weight:800;white-space:nowrap;background:rgba(245,168,0,.12);color:var(--gold);}
+    .calendar-embed{border-radius:var(--radius);overflow:hidden;border:1px solid rgba(245,168,0,.1);margin-top:32px;}
+    .calendar-embed iframe{width:100%;border:none;display:block;}
+
+    /* ── VOIX CROISÉES ── */
+    #voix{background:linear-gradient(180deg,rgba(15,61,26,.5) 0%,rgba(12,15,10,.9) 100%);border-top:1px solid rgba(30,107,48,.3);border-bottom:1px solid rgba(30,107,48,.3);}
+    #voix .s-label{color:var(--voix-light);}
+    .voix-grid{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start;}
+    @media(max-width:768px){.voix-grid{grid-template-columns:1fr;}}
+    .voix-poster-wrap{border-radius:20px;overflow:hidden;border:2px solid rgba(30,107,48,.35);box-shadow:0 20px 60px rgba(0,0,0,.5);cursor:pointer;transition:transform .2s;margin-bottom:18px;}
+    .voix-poster-wrap:hover{transform:scale(1.01);}
+    .voix-poster-wrap img{width:100%;height:auto;display:block;}
+    .voix-features{display:flex;flex-direction:column;gap:13px;margin-bottom:22px;}
+    .voix-feat{display:flex;gap:12px;align-items:flex-start;}
+    .voix-feat-line{width:3px;min-height:100%;background:var(--voix-green);border-radius:2px;flex-shrink:0;margin-top:4px;}
+    .voix-feat h4{font-weight:800;font-size:.92rem;color:#fff;margin-bottom:2px;}
+    .voix-feat p{color:var(--muted);font-size:.83rem;line-height:1.5;}
+    .voix-badges{display:flex;gap:9px;flex-wrap:wrap;margin:16px 0 18px;}
+    .badge{display:inline-block;padding:4px 13px;border-radius:30px;font-size:.7rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;}
+    .bv{background:rgba(30,107,48,.2);color:var(--voix-light);border:1px solid rgba(76,175,80,.3);}
+    .bg{background:rgba(245,168,0,.12);color:var(--gold);border:1px solid rgba(245,168,0,.25);}
+    .bo{background:rgba(212,82,10,.12);color:var(--orange);border:1px solid rgba(212,82,10,.25);}
+
+    /* ── FORM ── */
+    .form-card{background:rgba(15,61,26,.25);border:1px solid rgba(30,107,48,.3);border-radius:var(--radius);padding:30px;}
+    .form-card h3{font-size:1.05rem;font-weight:900;margin-bottom:20px;}
+    .fg{display:flex;flex-direction:column;gap:4px;margin-bottom:13px;}
+    .fg label{font-size:.7rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+    .fg input,.fg select,.fg textarea{background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:9px;color:var(--text);padding:10px 13px;font-size:.88rem;font-family:inherit;transition:border-color .2s;width:100%;}
+    .fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--voix-light);}
+    .fg textarea{min-height:80px;resize:vertical;}
+    .fg select option{background:var(--dark);}
+    .fgr{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+    @media(max-width:480px){.fgr{grid-template-columns:1fr;}}
+    .success-msg{display:none;background:rgba(76,175,80,.12);border:1px solid rgba(76,175,80,.3);border-radius:9px;padding:11px 16px;color:var(--voix-light);font-weight:700;text-align:center;margin-top:9px;}
+
+    /* ── CAMP ── */
+    #camp{background:linear-gradient(180deg,rgba(212,82,10,.04) 0%,transparent 100%);}
+    #camp .s-label{color:var(--orange);}
+    .camp-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;}
+    @media(max-width:768px){.camp-grid{grid-template-columns:1fr;}}
+    .camp-main{background:linear-gradient(135deg,#1C1200,#1F0D00);border:1px solid rgba(245,168,0,.2);border-radius:var(--radius);padding:34px;text-align:center;}
+    .camp-main h3{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:1px;margin-bottom:9px;color:var(--gold);}
+    .camp-main p{color:var(--muted);margin-bottom:24px;line-height:1.6;font-size:.93rem;}
+    .tutorial-card{background:var(--card);border:1px solid rgba(245,168,0,.1);border-radius:var(--radius);padding:26px;}
+    .tutorial-card h3{font-size:1rem;font-weight:900;margin-bottom:16px;color:var(--gold);}
+    .t-steps{display:flex;flex-direction:column;gap:12px;}
+    .t-step{display:flex;gap:11px;align-items:flex-start;}
+    .step-num{min-width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--orange),var(--gold));display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.78rem;color:#0C0F0A;flex-shrink:0;}
+    .t-step p{color:var(--muted);font-size:.85rem;line-height:1.5;}
+    .t-step p strong{color:var(--text);}
+    .camp-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:32px;}
+    .camp-card{background:var(--card);border:1px solid rgba(245,168,0,.08);border-radius:var(--radius);padding:26px;transition:transform .2s,border-color .2s;position:relative;overflow:hidden;}
+    .camp-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--orange),var(--gold));}
+    .camp-card:hover{transform:translateY(-5px);border-color:rgba(245,168,0,.22);}
+    .camp-card h4{font-weight:800;margin-bottom:6px;}
+    .camp-card p{color:var(--muted);font-size:.85rem;line-height:1.6;}
+
+    /* ── STUDIO ── */
+    #studio{background:linear-gradient(180deg,#100000 0%,var(--dark) 100%);border-top:1px solid rgba(232,37,26,.15);}
+    #studio .s-label{color:var(--studio-red);}
+    .studio-header{display:flex;align-items:center;gap:36px;margin-bottom:40px;flex-wrap:wrap;}
+    .studio-logo-wrap img{height:100px;width:auto;filter:drop-shadow(0 4px 18px rgba(232,37,26,.3));}
+    .studio-header-text h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,4vw,3rem);letter-spacing:1px;margin-bottom:8px;}
+    .studio-header-text h2 span{color:var(--studio-yellow);}
+    .studio-header-text p{color:var(--muted);line-height:1.65;max-width:500px;font-size:.93rem;margin-bottom:16px;}
+    .studio-socials{display:flex;gap:10px;flex-wrap:wrap;}
+    .studio-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;}
+    .studio-service{background:rgba(20,0,0,.6);border:1px solid rgba(232,37,26,.12);border-radius:var(--radius);padding:22px;transition:transform .2s,border-color .2s;}
+    .studio-service:hover{transform:translateY(-4px);border-color:rgba(255,184,0,.3);}
+    .studio-service h4{font-weight:800;font-size:.9rem;margin-bottom:5px;color:var(--studio-yellow);}
+    .studio-service p{color:var(--muted);font-size:.8rem;line-height:1.5;}
+
+    /* ── CONTACT ── */
+    #contact{background:rgba(18,22,14,.9);border-top:1px solid rgba(245,168,0,.08);}
+    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;}
+    @media(max-width:768px){.contact-grid{grid-template-columns:1fr;gap:24px;}}
+    .contact-info h2{font-family:'Bebas Neue',sans-serif;font-size:2.6rem;letter-spacing:1px;margin-bottom:10px;}
+    .contact-info p{color:var(--muted);line-height:1.7;margin-bottom:20px;font-size:.93rem;}
+    .c-detail{display:flex;gap:9px;align-items:flex-start;margin-bottom:9px;font-size:.88rem;line-height:1.4;}
+    .c-label{font-weight:700;color:var(--muted);min-width:70px;font-size:.72rem;text-transform:uppercase;letter-spacing:1px;padding-top:1px;}
+    #contact .form-card{background:var(--card);border:1px solid rgba(245,168,0,.1);}
+    #contact .fg input:focus,#contact .fg select:focus,#contact .fg textarea:focus{border-color:var(--gold);}
+    #contact-success{background:rgba(245,168,0,.1);border-color:rgba(245,168,0,.3);color:var(--gold);}
+    .member-strip{background:rgba(45,106,46,.08);border:1px solid rgba(45,106,46,.2);border-radius:var(--radius);padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:18px;flex-wrap:wrap;}
+    .member-strip p{font-size:.88rem;color:var(--muted);}
+    .member-strip p strong{color:var(--text);}
+
+    /* ── FOOTER ── */
+    footer{position:relative;z-index:1;background:var(--dark);border-top:1px solid rgba(255,255,255,.04);padding:28px 24px;text-align:center;color:var(--muted);font-size:.8rem;}
+    footer a{color:var(--gold);text-decoration:none;}
+    .footer-logos{display:flex;align-items:center;justify-content:center;gap:24px;margin-bottom:14px;flex-wrap:wrap;}
+    .footer-logos img{height:36px;width:auto;opacity:.7;filter:brightness(1.1);}
+
+    /* ── MODAL ── */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px);}
+    .modal-overlay.open{display:flex;}
+    .modal{background:#0e1a0f;border:1px solid rgba(30,107,48,.4);border-radius:22px;max-width:800px;width:100%;max-height:90vh;overflow-y:auto;position:relative;}
+    .modal-close{position:sticky;top:0;right:0;float:right;background:rgba(15,61,26,.85);border:none;color:var(--text);font-size:1.3rem;cursor:pointer;padding:10px 16px;border-radius:0 22px 0 12px;font-family:inherit;z-index:10;font-weight:700;}
+    .modal-body{padding:32px;}
+    .modal-poster{width:100%;border-radius:14px;margin-bottom:26px;display:block;}
+    .modal h2{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;letter-spacing:1px;margin-bottom:5px;color:var(--voix-light);}
+    .modal-sub{color:var(--muted);font-size:.93rem;line-height:1.65;margin-bottom:22px;}
+    .modal-section{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,.05);}
+    .modal-section:last-child{border-bottom:none;margin-bottom:0;}
+    .modal-section h3{font-weight:900;font-size:.85rem;color:var(--gold);margin-bottom:10px;text-transform:uppercase;letter-spacing:1.5px;}
+    .modal-section p{color:var(--muted);font-size:.88rem;line-height:1.65;}
+    .modal-section ul{padding-left:16px;display:flex;flex-direction:column;gap:5px;}
+    .modal-section li{color:var(--text);font-size:.86rem;line-height:1.5;}
+    .modal-section li::marker{color:var(--voix-light);}
+    .modal-dates{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px;}
+    @media(max-width:500px){.modal-dates{grid-template-columns:1fr;}}
+    .date-box{background:rgba(30,107,48,.15);border:1px solid rgba(30,107,48,.3);border-radius:10px;padding:12px 14px;}
+    .date-box h4{color:var(--voix-light);font-weight:800;font-size:.82rem;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;}
+    .date-box p{color:var(--muted);font-size:.82rem;line-height:1.4;}
+    .cost-box{background:rgba(245,168,0,.08);border:1px solid rgba(245,168,0,.2);border-radius:10px;padding:16px;text-align:center;margin-bottom:10px;}
+    .cost-box .price{font-family:'Bebas Neue',sans-serif;font-size:3rem;color:var(--gold);line-height:1;}
+    .cost-box p{color:var(--muted);font-size:.8rem;margin-top:4px;}
+    .covered-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+    @media(max-width:500px){.covered-grid{grid-template-columns:1fr;}}
+    .covered-item{background:rgba(30,107,48,.1);border-radius:8px;padding:8px 12px;font-size:.82rem;color:var(--text);}
+    .partner-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+    .partner-tags span{color:var(--muted);font-size:.75rem;font-weight:700;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);padding:4px 10px;border-radius:6px;}
+
+    /* ── FORM SECTIONS ── */
+    .form-section-title{font-size:.7rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--voix-light);margin:20px 0 12px;padding-top:16px;border-top:1px solid rgba(30,107,48,.2);}
+    .form-section-title:first-child{border-top:none;margin-top:0;padding-top:0;}
+    .check-group,.radio-group{display:flex;flex-direction:column;gap:8px;margin-top:4px;}
+    .check-item{display:flex;align-items:center;gap:9px;font-size:.87rem;color:var(--text);cursor:pointer;padding:6px 10px;border-radius:8px;transition:background .15s;}
+    .check-item:hover{background:rgba(30,107,48,.15);}
+    .check-item input[type=checkbox],.check-item input[type=radio]{accent-color:var(--voix-light);width:16px;height:16px;flex-shrink:0;cursor:pointer;}
+
+    /* ── REVEAL ── */
+    .reveal{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease;}
+    .reveal.visible{opacity:1;transform:translateY(0);}
+  </style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo"><img src="scfpa-logo.png" alt="SCFPA"/></div>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#events"  data-fr="Événements"    data-en="Events">Événements</a></li>
+    <li><a href="#voix"    data-fr="Voix Croisées" data-en="Voix Croisées">Voix Croisées</a></li>
+    <li><a href="#camp"    data-fr="Camp Été"       data-en="Summer Camp">Camp Été</a></li>
+    <li><a href="#studio"  data-fr="Studio"         data-en="Studio">Studio</a></li>
+    <li><a href="#contact" data-fr="Contact"        data-en="Contact">Contact</a></li>
+    <li class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+      <button class="lang-btn"        onclick="setLang('en')">EN</button>
+    </li>
+  </ul>
+  <div class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <img src="scfpa-logo.png" alt="SCFPA" class="hero-logo"/>
+  <div class="hero-location" data-fr="Prince Albert, Saskatchewan" data-en="Prince Albert, Saskatchewan">Prince Albert, Saskatchewan</div>
+  <h1>
+    <span class="gold" data-fr="Société Canadienne-Française" data-en="Canadian French Society">Société Canadienne-Française</span><br>
+    <span class="grn"  data-fr="de Prince Albert" data-en="of Prince Albert">de Prince Albert</span>
+  </h1>
+  <p class="hero-sub" data-fr="Arts, film, musique et culture francophone au cœur de la Saskatchewan." data-en="Arts, film, music and francophone culture at the heart of Saskatchewan.">Arts, film, musique et culture francophone au cœur de la Saskatchewan.</p>
+  <div class="hero-btns">
+    <a href="#events" class="btn btn-gold"  data-fr="Événements"    data-en="Events">Événements</a>
+    <a href="#voix"   class="btn btn-voix"  data-fr="Voix Croisées" data-en="Voix Croisées">Voix Croisées</a>
+    <a href="#camp"   class="btn btn-green" data-fr="Camp d'été"    data-en="Summer Camp">Camp d'été</a>
+  </div>
+  <div class="hero-socials">
+    <a href="https://www.facebook.com/Scfpa-102717146472749" target="_blank" class="social-pill">Facebook</a>
+    <a href="https://www.instagram.com/lascfpa/" target="_blank" class="social-pill">Instagram</a>
+    <a href="https://forms.gle/kDmdYzQuCLJuqHWo8" target="_blank" class="social-pill" data-fr="Infolettre" data-en="Newsletter">Infolettre</a>
+  </div>
+  <div class="scroll-down"><span>↓</span><div data-fr="Défiler" data-en="Scroll">Défiler</div></div>
+</section>
+
+<!-- EVENTS -->
+<section id="events">
+  <div class="inner">
+    <div class="s-label" style="color:var(--gold);" data-fr="Prochainement" data-en="Upcoming">Prochainement</div>
+    <h2 class="s-title" data-fr="Événements à venir" data-en="Upcoming Events">Événements à venir</h2>
+    <div class="divider dg"></div>
+    <p class="s-desc" data-fr="Spectacles, ateliers, projections et bien plus — restez connectés à la culture francophone." data-en="Shows, workshops, screenings and more — stay connected to francophone culture.">Spectacles, ateliers, projections et bien plus — restez connectés à la culture francophone.</p>
+
+    <div class="event-list">
+      <div class="event-item reveal">
+        <div class="edb"><div class="day">28</div><div class="month" data-fr="Juin" data-en="June">Juin</div></div>
+        <div class="event-info">
+          <h4 data-fr="Ouverture – Camp FrancoFun" data-en="Opening – Camp FrancoFun">Ouverture – Camp FrancoFun</h4>
+          <p data-fr="Prince Albert · Journée entière" data-en="Prince Albert · Full day">Prince Albert · Journée entière</p>
+        </div>
+        <div class="ebadge" style="color:var(--orange);" data-fr="Camp" data-en="Camp">Camp</div>
+      </div>
+      <div class="event-item reveal">
+        <div class="edb" style="background:linear-gradient(135deg,var(--voix-green),var(--voix-light));"><div class="day">17</div><div class="month" data-fr="Sept" data-en="Sept">Sept</div></div>
+        <div class="event-info">
+          <h4 data-fr="Voix Croisées — Segment Saskatchewan" data-en="Voix Croisées — Saskatchewan Segment">Voix Croisées — Segment Saskatchewan</h4>
+          <p data-fr="Prince Albert · 17–22 septembre 2026" data-en="Prince Albert · Sept 17–22, 2026">Prince Albert · 17–22 septembre 2026</p>
+        </div>
+        <div class="ebadge" style="color:var(--voix-light);">Voix Croisées</div>
+      </div>
+      <div class="event-item reveal">
+        <div class="edb" style="background:linear-gradient(135deg,var(--orange),var(--gold));"><div class="day">15</div><div class="month" data-fr="Oct" data-en="Oct">Oct</div></div>
+        <div class="event-info">
+          <h4 data-fr="Voix Croisées — Segment Québec" data-en="Voix Croisées — Quebec Segment">Voix Croisées — Segment Québec</h4>
+          <p data-fr="MRC de Portneuf, QC · 15–20 octobre 2026" data-en="MRC de Portneuf, QC · Oct 15–20, 2026">MRC de Portneuf, QC · 15–20 octobre 2026</p>
+        </div>
+        <div class="ebadge" style="color:var(--voix-light);">Voix Croisées</div>
+      </div>
+    </div>
+
+    <div class="calendar-embed reveal">
+      <iframe src="https://calendar.google.com/calendar/embed?height=500&wkst=1&bgcolor=%230e1a0f&ctz=America%2FRegina&src=Y29vcmRpbmF0aW9uc2NmcGFAc2Fza3RlbC5uZXQ&src=ZW4uY2FuYWRpYW4jaG9saWRheUBncm91cC52LmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23F5A800&color=%234A9E3F" height="500" scrolling="no"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- VOIX CROISÉES -->
+<section id="voix">
+  <div class="inner">
+    <div class="s-label" data-fr="Programme interprovincial" data-en="Interprovincial Program">Programme interprovincial</div>
+    <h2 class="s-title" style="color:#fff;" data-fr="Voix Croisées" data-en="Voix Croisées">Voix Croisées</h2>
+    <div class="divider dv"></div>
+    <p class="s-desc" data-fr="Un échange interprovincial entre la Saskatchewan et le Québec pour créer un docu-balado sur les échanges culturels. 16 à 18 ans. Aucune expérience requise." data-en="An interprovincial exchange between Saskatchewan and Quebec to create a documentary podcast on cultural exchanges. Ages 16–18. No experience required.">Un échange interprovincial entre la Saskatchewan et le Québec pour créer un docu-balado sur les échanges culturels. 16 à 18 ans. Aucune expérience requise.</p>
+
+    <div class="voix-grid">
+      <div>
+        <div class="voix-poster-wrap" onclick="openModal()">
+          <img src="voix-poster.jpg" alt="Affiche Voix Croisées"/>
+        </div>
+        <button onclick="openModal()" class="btn btn-voix" style="width:100%;margin-bottom:20px;" data-fr="Voir tous les détails du programme" data-en="View Full Program Details">Voir tous les détails du programme</button>
+
+        <div class="voix-features">
+          <div class="voix-feat reveal">
+            <div class="voix-feat-line"></div>
+            <div>
+              <h4 data-fr="Saskatchewan et Québec" data-en="Saskatchewan and Quebec">Saskatchewan et Québec</h4>
+              <p data-fr="Deux segments : 17–22 septembre en Saskatchewan, 15–20 octobre au Québec." data-en="Two segments: Sept 17–22 in Saskatchewan, Oct 15–20 in Quebec.">Deux segments : 17–22 septembre en Saskatchewan, 15–20 octobre au Québec.</p>
+            </div>
+          </div>
+          <div class="voix-feat reveal">
+            <div class="voix-feat-line"></div>
+            <div>
+              <h4 data-fr="Docu-balado" data-en="Documentary Podcast">Docu-balado</h4>
+              <p data-fr="Les participants créeront un docu-balado sur les échanges culturels et la découverte de nouveaux territoires." data-en="Participants will create a documentary podcast on cultural exchanges and discovering new territories.">Les participants créeront un docu-balado sur les échanges culturels et la découverte de nouveaux territoires.</p>
+            </div>
+          </div>
+          <div class="voix-feat reveal">
+            <div class="voix-feat-line"></div>
+            <div>
+              <h4 data-fr="100$ — Tout inclus" data-en="$100 — All Inclusive">100$ — Tout inclus</h4>
+              <p data-fr="Vols, hébergement, repas et activités pris en charge. Seuls 100$ d'engagement sont requis." data-en="Flights, accommodation, meals and activities covered. Only $100 commitment fee required.">Vols, hébergement, repas et activités pris en charge. Seuls 100$ d'engagement sont requis.</p>
+            </div>
+          </div>
+          <div class="voix-feat reveal">
+            <div class="voix-feat-line"></div>
+            <div>
+              <h4 data-fr="Aucune expérience requise" data-en="No Experience Required">Aucune expérience requise</h4>
+              <p data-fr="16 à 18 ans, résidant de la région de Prince Albert. Formation et accompagnement continus inclus." data-en="Ages 16–18, resident of the Prince Albert region. Continuous training and mentorship included.">16 à 18 ans, résidant de la région de Prince Albert. Formation et accompagnement continus inclus.</p>
+            </div>
+          </div>
+        </div>
+        <div class="voix-badges">
+          <span class="badge bv" data-fr="16–18 ans" data-en="Ages 16–18">16–18 ans</span>
+          <span class="badge bg" data-fr="Automne 2026" data-en="Fall 2026">Automne 2026</span>
+          <span class="badge bo" data-fr="100$ seulement" data-en="Only $100">100$ seulement</span>
+        </div>
+        <p style="font-size:.78rem;color:var(--muted);">Plus d'infos : <a href="https://www.lareverie.info" target="_blank" style="color:var(--voix-light);">www.lareverie.info</a></p>
+      </div>
+
+      <div class="form-card reveal">
+        <h3 data-fr="Soumettre une candidature" data-en="Submit an Application">Soumettre une candidature</h3>
+        <div data-fs-success style="display:none;background:rgba(76,175,80,.12);border:1px solid rgba(76,175,80,.3);border-radius:9px;padding:16px;color:var(--voix-light);font-weight:700;text-align:center;">Candidature reçue — nous vous contacterons bientôt.</div>
+        <div data-fs-error style="display:none;background:rgba(232,37,26,.1);border:1px solid rgba(232,37,26,.3);border-radius:9px;padding:12px;color:#ff6b6b;font-size:.85rem;text-align:center;margin-bottom:10px;"></div>
+        <form id="voix-form">
+
+          <!-- INFOS PERSONNELLES -->
+          <div class="form-section-title">Informations personnelles</div>
+          <div class="fg">
+            <label>Nom complet *</label>
+            <input type="text" name="nom_complet" required placeholder="Marie Dupont" data-fs-field/>
+          </div>
+          <div class="fg">
+            <label>Date de naissance *</label>
+            <input type="date" name="date_naissance" required data-fs-field/>
+          </div>
+          <div class="fg">
+            <label>Adresse *</label>
+            <input type="text" name="adresse" required placeholder="123 rue Principale, Prince Albert, SK" data-fs-field/>
+          </div>
+          <div class="fgr">
+            <div class="fg">
+              <label>Numéro de téléphone *</label>
+              <input type="tel" name="telephone" required placeholder="306-000-0000" data-fs-field/>
+            </div>
+            <div class="fg">
+              <label>Courriel *</label>
+              <input type="email" name="email" required placeholder="marie@example.com" data-fs-field/>
+              <span data-fs-error="email" style="color:#ff6b6b;font-size:.75rem;"></span>
+            </div>
+          </div>
+
+          <!-- PARENT / GARDIEN -->
+          <div class="form-section-title">Parent ou gardien légal</div>
+          <div class="fg">
+            <label>Nom du parent ou gardien légal *</label>
+            <input type="text" name="nom_parent" required placeholder="Jean Dupont" data-fs-field/>
+          </div>
+          <div class="fgr">
+            <div class="fg">
+              <label>Téléphone du parent *</label>
+              <input type="tel" name="telephone_parent" required placeholder="306-000-0000" data-fs-field/>
+            </div>
+            <div class="fg">
+              <label>Courriel du parent *</label>
+              <input type="email" name="email_parent" required placeholder="parent@example.com" data-fs-field/>
+            </div>
+          </div>
+
+          <!-- MOTIVATION -->
+          <div class="form-section-title">Motivation de participation</div>
+          <div class="fg">
+            <label>Pourquoi souhaites-tu participer au projet Voix croisées? *</label>
+            <textarea name="motivation" required placeholder="Dis-nous pourquoi tu veux participer…" data-fs-field></textarea>
+          </div>
+          <div class="fg">
+            <label>Qu'est-ce qui t'intéresse le plus dans cette expérience? * <span style="font-weight:400;color:var(--muted);">(Sélectionne tout ce qui s'applique)</span></label>
+            <div class="check-group">
+              <label class="check-item"><input type="checkbox" name="interets[]" value="Découvrir une autre province"/> Découvrir une autre province</label>
+              <label class="check-item"><input type="checkbox" name="interets[]" value="Rencontrer de nouvelles personnes"/> Rencontrer de nouvelles personnes</label>
+              <label class="check-item"><input type="checkbox" name="interets[]" value="Créer un docu-balado"/> Créer un docu-balado</label>
+              <label class="check-item"><input type="checkbox" name="interets[]" value="Apprendre sur le multimédia"/> Apprendre sur le multimédia</label>
+              <label class="check-item"><input type="checkbox" name="interets[]" value="Voyager"/> Voyager</label>
+              <label class="check-item"><input type="checkbox" name="interets[]" value="Découvrir une autre réalité francophone"/> Découvrir une autre réalité francophone</label>
+              <label class="check-item"><input type="checkbox" name="interets[]" value="Faire découvrir ma région"/> Faire découvrir ma région</label>
+            </div>
+          </div>
+          <div class="fg">
+            <label>Selon toi, qu'est-ce qu'un échange culturel peut apporter à une personne? *</label>
+            <textarea name="echange_culturel" required placeholder="Ta réponse…" data-fs-field></textarea>
+          </div>
+          <div class="fg">
+            <label>Pourquoi crois-tu être un bon représentant ou une bonne représentante de ta région? *</label>
+            <textarea name="representant" required placeholder="Ta réponse…" data-fs-field></textarea>
+          </div>
+
+          <!-- INTÉRÊTS ET EXPÉRIENCES -->
+          <div class="form-section-title">Intérêts et expériences</div>
+          <div class="fg">
+            <label>As-tu déjà participé à : * <span style="font-weight:400;color:var(--muted);">(Sélectionne tout ce qui s'applique)</span></label>
+            <div class="check-group">
+              <label class="check-item"><input type="checkbox" name="experience[]" value="Projet artistique"/> Projet artistique</label>
+              <label class="check-item"><input type="checkbox" name="experience[]" value="Projet communautaire"/> Projet communautaire</label>
+              <label class="check-item"><input type="checkbox" name="experience[]" value="Activité de leadership"/> Activité de leadership</label>
+              <label class="check-item"><input type="checkbox" name="experience[]" value="Montage vidéo"/> Montage vidéo</label>
+              <label class="check-item"><input type="checkbox" name="experience[]" value="Balado / audio"/> Balado / audio</label>
+              <label class="check-item"><input type="checkbox" name="experience[]" value="Photographie"/> Photographie</label>
+              <label class="check-item"><input type="checkbox" name="experience[]" value="Création de contenu (réseaux sociaux)"/> Création de contenu (réseaux sociaux)</label>
+            </div>
+          </div>
+          <div class="fg">
+            <label>Quels sont tes intérêts ou passions? *</label>
+            <textarea name="passions" required placeholder="Ta réponse…" data-fs-field></textarea>
+          </div>
+          <div class="fg">
+            <label>Y a-t-il une compétence ou un talent que tu aimerais partager avec le groupe? *</label>
+            <textarea name="talent" required placeholder="Ta réponse…" data-fs-field></textarea>
+          </div>
+          <div class="fg">
+            <label>Comment décrirais-tu ta personnalité en quelques mots?</label>
+            <input type="text" name="personnalite" placeholder="Ex : curieux, créatif, sociable…" data-fs-field/>
+          </div>
+
+          <!-- ENGAGEMENT -->
+          <div class="form-section-title">Engagement et disponibilités</div>
+          <div class="fg">
+            <label>Confirmes-tu être disponible : *</label>
+            <div class="check-group">
+              <label class="check-item"><input type="checkbox" name="disponibilite[]" value="17 au 22 septembre 2026 (Saskatchewan)"/> 17 au 22 septembre 2026 — Saskatchewan</label>
+              <label class="check-item"><input type="checkbox" name="disponibilite[]" value="15 au 20 octobre 2026 (Québec)"/> 15 au 20 octobre 2026 — Québec</label>
+              <label class="check-item"><input type="checkbox" name="disponibilite[]" value="Rencontres préparatoires avant le départ"/> Rencontres préparatoires avant le départ</label>
+            </div>
+          </div>
+          <div class="fg">
+            <label>Es-tu à l'aise avec le voyage en avion? *</label>
+            <div class="radio-group">
+              <label class="check-item"><input type="radio" name="avion" value="Oui" required/> Oui</label>
+              <label class="check-item"><input type="radio" name="avion" value="Non"/> Non</label>
+              <label class="check-item"><input type="radio" name="avion" value="Je n'ai jamais voyagé en avion mais je suis ouvert/e"/> Je n'ai jamais voyagé en avion mais je suis ouvert/e</label>
+            </div>
+          </div>
+          <div class="fg">
+            <label>Possèdes-tu une pièce d'identité valide ou peux-tu en obtenir une avant le départ? *</label>
+            <div class="radio-group">
+              <label class="check-item"><input type="radio" name="identite" value="Oui" required/> Oui</label>
+              <label class="check-item"><input type="radio" name="identite" value="Non"/> Non</label>
+              <label class="check-item"><input type="radio" name="identite" value="Je ne suis pas certain/e"/> Je ne suis pas certain/e</label>
+            </div>
+          </div>
+          <div class="fg">
+            <label>Si tu pouvais faire découvrir une seule chose de ta région à quelqu'un qui vient d'ailleurs, ce serait quoi et pourquoi? *</label>
+            <textarea name="decouverte_region" required placeholder="Ta réponse…" data-fs-field></textarea>
+          </div>
+          <div class="fg">
+            <label>Y a-t-il autre chose que tu aimerais nous partager pour ta candidature?</label>
+            <textarea name="autre" placeholder="Ta réponse…" data-fs-field></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-voix" style="width:100%;margin-top:8px;" data-fs-submit-btn
+                  data-fr="Envoyer ma candidature" data-en="Submit Application">Envoyer ma candidature</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAMP -->
+<section id="camp">
+  <div class="inner">
+    <div class="s-label" data-fr="Jeunesse" data-en="Youth">Jeunesse</div>
+    <h2 class="s-title" style="color:var(--gold);" data-fr="Camp FrancoFun" data-en="Camp FrancoFun">Camp FrancoFun</h2>
+    <div class="divider dg"></div>
+    <p class="s-desc" data-fr="Un camp d'été pour les jeunes francophones de Prince Albert — créativité, amis, aventure." data-en="A summer camp for francophone youth in Prince Albert — creativity, friends, adventure.">Un camp d'été pour les jeunes francophones de Prince Albert — créativité, amis, aventure.</p>
+
+    <div class="camp-grid">
+      <div class="camp-main reveal">
+        <h3 data-fr="Inscrivez-vous maintenant" data-en="Register Now">Inscrivez-vous maintenant</h3>
+        <p data-fr="Places disponibles cet été. Inscription rapide et simple via Eventbrite." data-en="Spots available this summer. Quick and easy registration via Eventbrite.">Places disponibles cet été. Inscription rapide et simple via Eventbrite.</p>
+        <a href="https://www.eventbrite.ca/e/camp-francofun-tickets-1629118119149" target="_blank" class="btn btn-gold" data-fr="S'inscrire sur Eventbrite" data-en="Register on Eventbrite">S'inscrire sur Eventbrite</a>
+      </div>
+
+      <div class="tutorial-card reveal">
+        <h3 data-fr="Comment s'inscrire sur Eventbrite" data-en="How to Register on Eventbrite">Comment s'inscrire sur Eventbrite</h3>
+        <div class="t-steps">
+          <div class="t-step"><div class="step-num">1</div><p data-fr="<strong>Cliquez</strong> sur le bouton « S'inscrire sur Eventbrite »." data-en="<strong>Click</strong> the Register on Eventbrite button."><strong>Cliquez</strong> sur le bouton « S'inscrire sur Eventbrite ».</p></div>
+          <div class="t-step"><div class="step-num">2</div><p data-fr="Cliquez sur <strong>« Billets »</strong> sur la page de l'événement." data-en="Click <strong>Tickets</strong> on the event page.">Cliquez sur <strong>« Billets »</strong> sur la page de l'événement.</p></div>
+          <div class="t-step"><div class="step-num">3</div><p data-fr="<strong>Sélectionnez</strong> le nombre de places et cliquez sur « Commander »." data-en="<strong>Select</strong> the number of spots and click Order."><strong>Sélectionnez</strong> le nombre de places et cliquez sur « Commander ».</p></div>
+          <div class="t-step"><div class="step-num">4</div><p data-fr="<strong>Créez</strong> un compte Eventbrite gratuit ou connectez-vous." data-en="<strong>Create</strong> a free Eventbrite account or log in."><strong>Créez</strong> un compte Eventbrite gratuit ou connectez-vous.</p></div>
+          <div class="t-step"><div class="step-num">5</div><p data-fr="Remplissez les informations et <strong>confirmez</strong>. Une confirmation vous sera envoyée par courriel." data-en="Fill in the information and <strong>confirm</strong>. A confirmation will be sent by email.">Remplissez les informations et <strong>confirmez</strong>. Une confirmation vous sera envoyée par courriel.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp-cards">
+      <div class="camp-card reveal"><h4 data-fr="Arts créatifs" data-en="Creative Arts">Arts créatifs</h4><p data-fr="Peinture, dessin, sculpture et expression artistique libre dans un cadre bienveillant." data-en="Painting, drawing, sculpture and free artistic expression in a caring environment.">Peinture, dessin, sculpture et expression artistique libre dans un cadre bienveillant.</p></div>
+      <div class="camp-card reveal"><h4 data-fr="Musique et Performance" data-en="Music and Performance">Musique et Performance</h4><p data-fr="Chant, danse et initiation aux instruments de musique." data-en="Singing, dance and introduction to musical instruments.">Chant, danse et initiation aux instruments de musique.</p></div>
+      <div class="camp-card reveal"><h4 data-fr="Initiation au film" data-en="Intro to Film">Initiation au film</h4><p data-fr="Les jeunes apprennent à filmer, à éditer et à présenter leurs propres courts-métrages." data-en="Youth learn to film, edit and present their own short films.">Les jeunes apprennent à filmer, à éditer et à présenter leurs propres courts-métrages.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- STUDIO -->
+<section id="studio">
+  <div class="inner">
+    <div class="studio-header reveal">
+      <div class="studio-logo-wrap"><img src="studio-logo.png" alt="Studio Gaetan Benoit"/></div>
+      <div class="studio-header-text">
+        <div class="s-label" data-fr="Infrastructure professionnelle" data-en="Professional Infrastructure">Infrastructure professionnelle</div>
+        <h2><span data-fr="Studio Gaëtan Benoît" data-en="Studio Gaëtan Benoît">Studio Gaëtan Benoît</span></h2>
+        <p data-fr="Notre studio professionnel de vidéo et de musique — un espace de création complet au cœur de Prince Albert." data-en="Our professional video and music studio — a complete creative space at the heart of Prince Albert.">Notre studio professionnel de vidéo et de musique — un espace de création complet au cœur de Prince Albert.</p>
+        <div class="studio-socials">
+          <a href="https://www.youtube.com/@StudioGaetanBenoitPA" target="_blank" class="btn btn-red" style="padding:9px 20px;font-size:.82rem;">YouTube</a>
+          <a href="https://www.instagram.com/studiogaetanbenoit_/" target="_blank" class="btn btn-studio" style="padding:9px 20px;font-size:.82rem;">Instagram</a>
+          <a href="#contact" class="btn btn-outline" style="padding:9px 20px;font-size:.82rem;" data-fr="Réserver le studio" data-en="Book the Studio">Réserver le studio</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="studio-grid">
+      <div class="studio-service reveal"><h4 data-fr="Enregistrement audio" data-en="Audio Recording">Enregistrement audio</h4><p data-fr="Cabine insonorisée, équipement haut de gamme, ingénieur de son disponible." data-en="Soundproofed booth, high-end equipment, sound engineer available.">Cabine insonorisée, équipement haut de gamme, ingénieur de son disponible.</p></div>
+      <div class="studio-service reveal"><h4 data-fr="Production vidéo" data-en="Video Production">Production vidéo</h4><p data-fr="Tournage professionnel, cyclorama, éclairage de scène, caméras 4K." data-en="Professional filming, cyclorama, stage lighting, 4K cameras.">Tournage professionnel, cyclorama, éclairage de scène, caméras 4K.</p></div>
+      <div class="studio-service reveal"><h4 data-fr="Mixage et Mastering" data-en="Mixing and Mastering">Mixage et Mastering</h4><p data-fr="Suite de post-production complète pour donner vie à vos projets sonores." data-en="Complete post-production suite to bring your audio projects to life.">Suite de post-production complète pour donner vie à vos projets sonores.</p></div>
+      <div class="studio-service reveal"><h4 data-fr="Montage vidéo" data-en="Video Editing">Montage vidéo</h4><p data-fr="Poste de montage dédié avec logiciels d'édition de pointe." data-en="Dedicated editing workstation with cutting-edge software.">Poste de montage dédié avec logiciels d'édition de pointe.</p></div>
+      <div class="studio-service reveal"><h4 data-fr="Instruments" data-en="Instruments">Instruments</h4><p data-fr="Piano, guitares, basse, batterie et plus — tout disponible sur place." data-en="Piano, guitars, bass, drums and more — all available on-site.">Piano, guitares, basse, batterie et plus — tout disponible sur place.</p></div>
+      <div class="studio-service reveal"><h4 data-fr="Location d'espace" data-en="Space Rental">Location d'espace</h4><p data-fr="Disponible pour groupes, artistes et organismes communautaires." data-en="Available for groups, artists and community organizations.">Disponible pour groupes, artistes et organismes communautaires.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="inner">
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <div class="s-label" style="color:var(--gold);" data-fr="Nous joindre" data-en="Get in Touch">Nous joindre</div>
+        <h2 data-fr="Contactez-nous" data-en="Contact Us">Contactez-nous</h2>
+        <div class="divider dg"></div>
+        <p data-fr="Des questions sur nos programmes, notre studio ou nos événements? Nous sommes là pour vous aider." data-en="Questions about our programs, studio or events? We're here to help.">Des questions sur nos programmes, notre studio ou nos événements? Nous sommes là pour vous aider.</p>
+        <div class="c-detail"><span class="c-label" data-fr="Adresse" data-en="Address">Adresse</span><span>29 11ème rue Est, Prince Albert, SK, S6V 0Z8</span></div>
+        <div class="c-detail"><span class="c-label">Courriel</span><span><a href="mailto:scfpa@sasktel.net" style="color:var(--gold);">scfpa@sasktel.net</a></span></div>
+        <div class="c-detail"><span class="c-label" data-fr="Téléphone" data-en="Phone">Téléphone</span><span><a href="tel:3067630337" style="color:var(--gold);">306.763.0337</a></span></div>
+        <div class="c-detail"><span class="c-label">Facebook</span><span><a href="https://www.facebook.com/Scfpa-102717146472749" target="_blank" style="color:var(--gold);">SCFPA</a></span></div>
+        <div class="c-detail"><span class="c-label">Instagram</span><span><a href="https://www.instagram.com/lascfpa/" target="_blank" style="color:var(--gold);">@lascfpa</a></span></div>
+
+        <div class="member-strip">
+          <p data-fr="<strong>Devenez membre</strong> — rejoignez la communauté SCFPA." data-en="<strong>Become a member</strong> — join the SCFPA community."><strong>Devenez membre</strong> — rejoignez la communauté SCFPA.</p>
+          <a href="https://forms.gle/kDmdYzQuCLJuqHWo8" target="_blank" class="btn btn-green" style="padding:9px 20px;font-size:.82rem;" data-fr="Adhérer" data-en="Join">Adhérer</a>
+        </div>
+      </div>
+
+      <div class="form-card reveal" style="background:var(--card);border-color:rgba(245,168,0,.1);">
+        <h3 data-fr="Envoyer un message" data-en="Send a Message">Envoyer un message</h3>
+        <div data-fs-success style="display:none;background:rgba(245,168,0,.1);border:1px solid rgba(245,168,0,.3);border-radius:9px;padding:14px;color:var(--gold);font-weight:700;text-align:center;">Message envoyé — nous vous répondrons bientôt.</div>
+        <div data-fs-error style="display:none;background:rgba(232,37,26,.1);border:1px solid rgba(232,37,26,.3);border-radius:9px;padding:12px;color:#ff6b6b;font-size:.85rem;text-align:center;margin-bottom:10px;"></div>
+        <form id="contact-form">
+          <div class="fgr">
+            <div class="fg">
+              <label data-fr="Prénom" data-en="First Name">Prénom</label>
+              <input type="text" name="prenom" required placeholder="Jean" data-fs-field/>
+            </div>
+            <div class="fg">
+              <label data-fr="Nom" data-en="Last Name">Nom</label>
+              <input type="text" name="nom" required placeholder="Tremblay" data-fs-field/>
+            </div>
+          </div>
+          <div class="fg">
+            <label data-fr="Courriel" data-en="Email">Courriel</label>
+            <input type="email" name="email" required placeholder="jean@example.com" data-fs-field/>
+            <span data-fs-error="email" style="color:#ff6b6b;font-size:.75rem;"></span>
+          </div>
+          <div class="fg">
+            <label data-fr="Sujet" data-en="Subject">Sujet</label>
+            <select name="sujet" required data-fs-field>
+              <option value="">-- Choisir --</option>
+              <option data-fr="Voix Croisées" data-en="Voix Croisées">Voix Croisées</option>
+              <option data-fr="Camp FrancoFun" data-en="Camp FrancoFun">Camp FrancoFun</option>
+              <option data-fr="Studio Gaëtan Benoît" data-en="Studio Gaëtan Benoît">Studio Gaëtan Benoît</option>
+              <option data-fr="Événements" data-en="Events">Événements</option>
+              <option data-fr="Adhésion / Don" data-en="Membership / Donation">Adhésion / Don</option>
+              <option data-fr="Autre" data-en="Other">Autre</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label data-fr="Message" data-en="Message">Message</label>
+            <textarea name="message" required placeholder="Bonjour…" style="min-height:95px;" data-fs-field></textarea>
+            <span data-fs-error="message" style="color:#ff6b6b;font-size:.75rem;"></span>
+          </div>
+          <button type="submit" class="btn btn-gold" style="width:100%;" data-fs-submit-btn
+                  data-fr="Envoyer" data-en="Send">Envoyer</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logos">
+    <img src="scfpa-logo.png" alt="SCFPA"/>
+    <img src="studio-logo.png" alt="Studio Gaetan Benoit"/>
+    <img src="voix-logo.png" alt="Voix Croisées"/>
+  </div>
+  <p>© 2026 <strong>SCFPA</strong> — Société Canadienne-Française de Prince Albert &nbsp;·&nbsp;
+    <a href="mailto:scfpa@sasktel.net">scfpa@sasktel.net</a> &nbsp;·&nbsp;
+    <a href="tel:3067630337">306.763.0337</a> &nbsp;·&nbsp;
+    <a href="https://www.facebook.com/Scfpa-102717146472749" target="_blank">Facebook</a> &nbsp;·&nbsp;
+    <a href="https://www.instagram.com/lascfpa/" target="_blank">Instagram</a>
+  </p>
+  <p style="margin-top:6px;opacity:.35;font-size:.73rem;">29 11ème rue Est, Prince Albert, SK, S6V 0Z8</p>
+</footer>
+
+<!-- VOIX CROISÉES MODAL -->
+<div class="modal-overlay" id="voix-modal" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-body">
+      <img src="voix-poster.jpg" alt="Affiche Voix Croisées" class="modal-poster" onerror="this.style.display='none'"/>
+      <h2>Voix Croisées</h2>
+      <p class="modal-sub" data-fr="Une expérience unique et inoubliable pour les jeunes de la région de Prince Albert." data-en="A unique and unforgettable experience for youth from the Prince Albert region.">Une expérience unique et inoubliable pour les jeunes de la région de Prince Albert.</p>
+
+      <div class="modal-section">
+        <h3 data-fr="Le projet" data-en="The Project">Le projet</h3>
+        <p data-fr="Un échange interprovincial où les participants créeront un <strong>docu-balado</strong> sur les échanges culturels et la découverte de nouveaux territoires. Voix Croisées est un projet collaboratif entre <strong>La Société Canadienne-Française de Prince Albert</strong> et <strong>La Rêverie : Hub Créatif</strong>." data-en="An interprovincial exchange where participants will create a <strong>documentary podcast</strong> on cultural exchanges and discovering new territories. A collaborative project between <strong>La Société Canadienne-Française de Prince Albert</strong> and <strong>La Rêverie : Hub Créatif</strong>.">Un échange interprovincial où les participants créeront un <strong>docu-balado</strong> sur les échanges culturels et la découverte de nouveaux territoires. Voix Croisées est un projet collaboratif entre <strong>La Société Canadienne-Française de Prince Albert</strong> et <strong>La Rêverie : Hub Créatif</strong>.</p>
+      </div>
+
+      <div class="modal-section">
+        <h3 data-fr="Les dates" data-en="Dates">Les dates</h3>
+        <div class="modal-dates">
+          <div class="date-box">
+            <h4 data-fr="Segment Saskatchewan" data-en="Saskatchewan Segment">Segment Saskatchewan</h4>
+            <p data-fr="17 – 22 septembre 2026<br>Prince Albert, SK" data-en="Sept 17 – 22, 2026<br>Prince Albert, SK">17 – 22 septembre 2026<br>Prince Albert, SK</p>
+          </div>
+          <div class="date-box">
+            <h4 data-fr="Segment Québec" data-en="Quebec Segment">Segment Québec</h4>
+            <p data-fr="15 – 20 octobre 2026<br>MRC de Portneuf, QC" data-en="Oct 15 – 20, 2026<br>MRC de Portneuf, QC">15 – 20 octobre 2026<br>MRC de Portneuf, QC</p>
+          </div>
+        </div>
+        <p style="font-size:.8rem;color:var(--muted);margin-top:8px;" data-fr="Rencontres préparatoires avant le départ (dates à confirmer)." data-en="Preparatory meetings before departure (dates TBC).">Rencontres préparatoires avant le départ (dates à confirmer).</p>
+      </div>
+
+      <div class="modal-section">
+        <h3 data-fr="Profil recherché" data-en="Who We're Looking For">Profil recherché</h3>
+        <ul>
+          <li data-fr="Âgé entre 16 et 18 ans" data-en="Aged 16 to 18">Âgé entre 16 et 18 ans</li>
+          <li data-fr="Résident de la région de Prince Albert" data-en="Resident of the Prince Albert region">Résident de la région de Prince Albert</li>
+          <li data-fr="Bon sens du leadership" data-en="Good sense of leadership">Bon sens du leadership</li>
+          <li data-fr="Intérêt pour le multimédia (vidéo, balado, photos, studio d'enregistrement, etc.)" data-en="Interest in multimedia (video, podcast, photos, recording studio, etc.)">Intérêt pour le multimédia (vidéo, balado, photos, studio d'enregistrement, etc.)</li>
+          <li data-fr="À l'aise avec le voyage aérien" data-en="Comfortable with air travel">À l'aise avec le voyage aérien</li>
+          <li data-fr="<strong>Aucune expérience n'est requise</strong> — l'objectif du projet est aussi d'apprendre à travers l'expérience." data-en="<strong>No experience required</strong> — the goal of the project is also to learn through experience."><strong>Aucune expérience n'est requise</strong> — l'objectif du projet est aussi d'apprendre à travers l'expérience.</li>
+        </ul>
+        <p style="margin-top:10px;font-size:.8rem;color:var(--muted);" data-fr="Les membres de famille des employés de la SCFPA ne sont pas admissibles." data-en="Family members of SCFPA employees are not eligible.">Les membres de famille des employés de la SCFPA ne sont pas admissibles.</p>
+      </div>
+
+      <div class="modal-section">
+        <h3 data-fr="Coût" data-en="Cost">Coût</h3>
+        <div class="cost-box">
+          <div class="price">100$</div>
+          <p data-fr="Frais d'engagement pour l'ensemble du projet" data-en="Commitment fee for the entire project">Frais d'engagement pour l'ensemble du projet</p>
+        </div>
+        <p style="font-weight:800;font-size:.86rem;color:var(--text);margin-bottom:8px;" data-fr="La SCFPA et La Rêverie prennent en charge :" data-en="SCFPA and La Rêverie cover:">La SCFPA et La Rêverie prennent en charge :</p>
+        <div class="covered-grid">
+          <div class="covered-item" data-fr="Billets d'avion" data-en="Flights">Billets d'avion</div>
+          <div class="covered-item" data-fr="Hébergement" data-en="Accommodation">Hébergement</div>
+          <div class="covered-item" data-fr="Repas" data-en="Meals">Repas</div>
+          <div class="covered-item" data-fr="Activités" data-en="Activities">Activités</div>
+        </div>
+        <p style="font-size:.78rem;color:var(--muted);margin-top:8px;" data-fr="Prévoir de l'argent de poche pour les souvenirs et les dépenses personnelles." data-en="Bring pocket money for souvenirs and personal expenses.">Prévoir de l'argent de poche pour les souvenirs et les dépenses personnelles.</p>
+      </div>
+
+      <div class="modal-section">
+        <h3 data-fr="Engagements" data-en="Commitments">Engagements</h3>
+        <ul>
+          <li data-fr="Être disponible du 17 au 22 septembre 2026 (segment Saskatchewan)" data-en="Available Sept 17–22, 2026 (Saskatchewan segment)">Être disponible du 17 au 22 septembre 2026 (segment Saskatchewan)</li>
+          <li data-fr="Être disponible du 15 au 20 octobre 2026 (segment Québec)" data-en="Available Oct 15–20, 2026 (Quebec segment)">Être disponible du 15 au 20 octobre 2026 (segment Québec)</li>
+          <li data-fr="Participer à au moins deux rencontres préparatoires avant le départ" data-en="Attend at least two preparatory meetings before departure">Participer à au moins deux rencontres préparatoires avant le départ</li>
+          <li data-fr="Avoir une pièce d'identité valide pour voyager" data-en="Have valid ID to travel">Avoir une pièce d'identité valide pour voyager</li>
+          <li data-fr="Fournir une autorisation signée par un parent ou gardien légal" data-en="Provide authorization signed by a parent or legal guardian">Fournir une autorisation signée par un parent ou gardien légal</li>
+        </ul>
+      </div>
+
+      <div class="modal-section">
+        <h3 data-fr="Partenaires" data-en="Partners">Partenaires</h3>
+        <div class="partner-tags">
+          <span>SCFPA</span>
+          <span>La Rêverie : Hub Créatif</span>
+          <span>FDEFP</span>
+          <span>CÉCS</span>
+        </div>
+        <p style="margin-top:10px;font-size:.8rem;color:var(--muted);" data-fr="Nous remercions le Conseil Économique et Coopératif de la Saskatchewan et le Fonds du Développement économique des Prairies Canadiennes pour leur soutien financier." data-en="We thank the Conseil Économique et Coopératif de la Saskatchewan and the Fonds du Développement économique des Prairies Canadiennes for their financial support.">Nous remercions le Conseil Économique et Coopératif de la Saskatchewan et le Fonds du Développement économique des Prairies Canadiennes pour leur soutien financier.</p>
+        <p style="margin-top:6px;font-size:.8rem;">
+          <a href="https://www.lareverie.info" target="_blank" style="color:var(--voix-light);">www.lareverie.info</a>
+        </p>
+      </div>
+
+      <div style="text-align:center;margin-top:24px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <a href="#voix" onclick="closeModal()" class="btn btn-voix" data-fr="Postuler maintenant" data-en="Apply Now">Postuler maintenant</a>
+        <button onclick="closeModal()" class="btn btn-outline" data-fr="Fermer" data-en="Close">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* PARTICLES */
+(function(){
+  const cv=document.getElementById('bg-canvas'),ctx=cv.getContext('2d');
+  let W,H,pts=[];
+  const mouse={x:-999,y:-999};
+  const C=['#2D6A2E','#F5A800','#D4520A','#4A9E3F','#6B3A2A','#1E6B30'];
+  function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}
+  function Pt(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.5;this.vy=(Math.random()-.5)*.5;this.r=Math.random()*2+.7;this.color=C[Math.floor(Math.random()*C.length)];this.a=Math.random()*.35+.1;}
+  function init(){resize();pts=[];for(let i=0;i<90;i++)pts.push(new Pt());}
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.hypot(dx,dy);if(d<120){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle=`rgba(45,106,46,${.1*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke();}}
+    for(const p of pts){const dx=p.x-mouse.x,dy=p.y-mouse.y,d=Math.hypot(dx,dy);if(d<130&&d>0){const f=(130-d)/130*.85;p.vx+=(dx/d)*f;p.vy+=(dy/d)*f;}p.vx*=.98;p.vy*=.98;p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.color;ctx.globalAlpha=p.a;ctx.fill();ctx.globalAlpha=1;}
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',init);
+  window.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;});
+  init();draw();
+})();
+
+/* LANGUAGE */
+let lang='fr';
+function setLang(l){
+  lang=l;
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${l}')"]`).classList.add('active');
+  document.querySelectorAll('[data-fr]').forEach(el=>{
+    const v=el.getAttribute('data-'+l);if(!v)return;
+    if(el.tagName==='INPUT'||el.tagName==='TEXTAREA')el.placeholder=v;
+    else if(el.tagName==='OPTION')el.textContent=v;
+    else el.innerHTML=v;
+  });
+  document.documentElement.lang=l;
+}
+
+/* FORMS */
+function submitForm(e,id){
+  e.preventDefault();
+  const msg=document.getElementById(id);
+  if(msg){msg.style.display='block';setLang(lang);e.target.querySelectorAll('input,select,textarea').forEach(f=>f.value='');setTimeout(()=>msg.style.display='none',5000);}
+}
+
+/* NAV */
+function toggleNav(){document.getElementById('nav-links').classList.toggle('open');}
+document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>document.getElementById('nav-links').classList.remove('open')));
+
+/* MODAL */
+function openModal(){document.getElementById('voix-modal').classList.add('open');document.body.style.overflow='hidden';}
+function closeModal(){document.getElementById('voix-modal').classList.remove('open');document.body.style.overflow='';}
+function closeModalOutside(e){if(e.target===document.getElementById('voix-modal'))closeModal();}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+/* REVEAL */
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+
+<!-- Formspree Ajax — both forms -->
+<script>
+  window.formspree = window.formspree || function(){ (formspree.q = formspree.q || []).push(arguments); };
+  formspree('initForm', { formElement: '#voix-form',    formId: 'xaqkrrwr' });
+  formspree('initForm', { formElement: '#contact-form', formId: 'mwvzggvn' });
+</script>
+<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+</body>
+</html>
