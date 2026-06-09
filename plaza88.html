@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plaza 88 — Pôle Francophone Régional | Regional Francophone Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;0,800;0,900;1,600;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+
+  <style>
+  /* ═══════════════════════════════════════════════════
+     VARIABLES
+  ═══════════════════════════════════════════════════ */
+  :root {
+    --cream:      #EDE7D0;
+    --cream-d:    #DDD5B5;
+    --forest:     #1B5C28;
+    --forest-d:   #0F3A18;
+    --orange:     #D44820;
+    --amber:      #E8A020;
+    --yellow:     #F0C840;
+    --black:      #1A1A1A;
+    --gray:       #777;
+    --white:      #ffffff;
+    --r-img:      24px;
+    --r-card:     14px;
+  }
+
+  /* ═══════════════════════════════════════════════════
+     RESET + BASE
+  ═══════════════════════════════════════════════════ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html  { scroll-behavior: smooth; }
+  body  { font-family: 'DM Sans', system-ui, sans-serif; background: var(--cream); color: var(--black); overflow-x: hidden; }
+  img   { display: block; max-width: 100%; }
+  ul    { list-style: none; }
+  a     { text-decoration: none; color: inherit; }
+
+  /* ═══════════════════════════════════════════════════
+     TYPOGRAPHY SCALE
+  ═══════════════════════════════════════════════════ */
+  .f-poppins { font-family: 'Poppins', system-ui, sans-serif; }
+  .fw-black  { font-weight: 900; }
+  .fw-bold   { font-weight: 700; }
+  .fw-semi   { font-weight: 600; }
+  .italic    { font-style: italic; }
+
+  .t-display { font-family: 'Poppins', sans-serif; font-weight: 900; line-height: 1.0; font-size: clamp(68px, 10vw, 116px); }
+  .t-h1      { font-family: 'Poppins', sans-serif; font-weight: 800; line-height: 1.1; font-size: clamp(44px, 6vw, 66px); }
+  .t-h2      { font-family: 'Poppins', sans-serif; font-weight: 800; line-height: 1.15; font-size: clamp(30px, 4vw, 44px); }
+  .t-eyebrow { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+  .t-sub     { font-family: 'Poppins', sans-serif; font-weight: 600; font-style: italic; font-size: clamp(15px, 1.6vw, 18px); }
+  .t-body    { font-size: clamp(14px, 1.3vw, 16px); line-height: 1.72; }
+  .t-sm      { font-size: 13px; line-height: 1.6; }
+  .t-xs      { font-size: 11px; }
+
+  /* ═══════════════════════════════════════════════════
+     COLOR HELPERS
+  ═══════════════════════════════════════════════════ */
+  .c-forest  { color: var(--forest); }
+  .c-orange  { color: var(--orange); }
+  .c-amber   { color: var(--amber); }
+  .c-yellow  { color: var(--yellow); }
+  .c-white   { color: var(--white); }
+  .c-cream   { color: var(--cream); }
+  .c-gray    { color: var(--gray); }
+  .c-black   { color: var(--black); }
+  .bg-cream  { background: var(--cream); }
+  .bg-forest { background: var(--forest); }
+
+  /* ═══════════════════════════════════════════════════
+     CHECKER STRIPS
+  ═══════════════════════════════════════════════════ */
+  .checker, .checker-orange, .checker-on-forest {
+    height: 30px;
+    flex-shrink: 0;
+    width: 100%;
+  }
+  .checker           { background: repeating-conic-gradient(var(--forest) 0% 25%, var(--cream)  0% 50%) 0 0 / 30px 30px; }
+  .checker-orange    { background: repeating-conic-gradient(var(--orange) 0% 25%, var(--cream)  0% 50%) 0 0 / 30px 30px; }
+  .checker-on-forest { background: repeating-conic-gradient(var(--orange) 0% 25%, var(--forest) 0% 50%) 0 0 / 30px 30px; }
+
+  /* ═══════════════════════════════════════════════════
+     DASHED RULE
+  ═══════════════════════════════════════════════════ */
+  .dash { border: none; border-top: 2px dashed var(--forest); opacity: 0.45; margin: 20px 0; }
+  .dash.light { border-color: var(--cream); opacity: 0.3; }
+
+  /* ═══════════════════════════════════════════════════
+     CORNER TAG
+  ═══════════════════════════════════════════════════ */
+  .tag {
+    display: inline-block;
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 5px 12px; border-radius: 6px;
+    background: var(--forest); color: var(--cream);
+  }
+  .tag.orange { background: var(--orange); }
+
+  /* ═══════════════════════════════════════════════════
+     SPARKLE
+  ═══════════════════════════════════════════════════ */
+  .sp {
+    position: absolute;
+    font-size: 26px;
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.55;
+  }
+
+  /* ═══════════════════════════════════════════════════
+     SCROLL ANIMATIONS
+  ═══════════════════════════════════════════════════ */
+  .fade-up { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-up.in { opacity: 1; transform: translateY(0); }
+  .fade-up.d1 { transition-delay: 0.12s; }
+  .fade-up.d2 { transition-delay: 0.24s; }
+  .fade-up.d3 { transition-delay: 0.36s; }
+
+  /* ═══════════════════════════════════════════════════
+     NAV
+  ═══════════════════════════════════════════════════ */
+  .nav {
+    position: sticky; top: 0; z-index: 200;
+    background: var(--forest-d);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 48px;
+    box-shadow: 0 3px 16px rgba(0,0,0,0.3);
+  }
+  .nav-brand { display: flex; align-items: center; gap: 12px; }
+  .nav-logo  { width: 38px; height: 38px; background: white; border-radius: 50%; padding: 2px; overflow: hidden; flex-shrink: 0; }
+  .nav-logo img { width: 100%; height: 100%; object-fit: contain; }
+  .nav-name  { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: 20px; color: var(--white); letter-spacing: -0.01em; }
+  .nav-name span { color: var(--orange); }
+  .nav-links { display: flex; gap: 28px; }
+  .nav-links a { font-family: 'Poppins', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(237,231,208,.7); transition: color .2s; }
+  .nav-links a:hover { color: var(--yellow); }
+
+  /* ═══════════════════════════════════════════════════
+     HERO
+  ═══════════════════════════════════════════════════ */
+  .hero { background: var(--cream); display: flex; flex-direction: column; }
+  .hero-stripe { height: 12px; background: var(--orange); }
+  .hero-body {
+    flex: 1;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+    min-height: 78vh;
+  }
+  .hero-left {
+    padding: 70px 60px 70px 80px;
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .hero-ghost {
+    position: absolute; bottom: -80px; left: -40px;
+    font-family: 'Poppins', sans-serif; font-weight: 900;
+    font-size: 380px; color: var(--cream-d);
+    line-height: 1; pointer-events: none; user-select: none; z-index: 0;
+  }
+  .hero-left > * { position: relative; z-index: 1; }
+
+  .hero-eyebrow { display: flex; align-items: center; gap: 14px; margin-bottom: 36px; }
+  .hero-elog { width: 58px; height: 58px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 10px rgba(0,0,0,.1); }
+  .hero-elog img { width: 50px; height: 50px; object-fit: contain; }
+  .hero-ename { font-family: 'Poppins', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--forest); }
+  .hero-esite { font-size: 11px; color: var(--gray); margin-top: 2px; }
+
+  .hero-title { line-height: 0.92; margin-bottom: 24px; }
+  .hero-title .plaza { display: block; font-family: 'Poppins', sans-serif; font-weight: 900; font-size: clamp(72px, 11vw, 118px); color: var(--forest); }
+  .hero-title .eee   { display: block; font-family: 'Poppins', sans-serif; font-weight: 900; font-size: clamp(72px, 11vw, 118px); color: var(--orange); }
+
+  .hero-sub-fr { font-family: 'Poppins', sans-serif; font-weight: 700; font-style: italic; font-size: 18px; color: var(--forest); }
+  .hero-sub-en { font-family: 'DM Sans', sans-serif; font-size: 15px; font-style: italic; color: var(--gray); margin-top: 4px; }
+  .hero-loc    { font-size: 13px; color: var(--gray); margin-top: 12px; letter-spacing: .02em; }
+  .hero-badges { display: flex; gap: 10px; margin-top: 28px; flex-wrap: wrap; }
+
+  .hero-right {
+    padding: 44px 72px 44px 28px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hero-img {
+    width: 100%; height: 500px;
+    border-radius: 28px; overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0,0,0,.18);
+  }
+  .hero-img img { width: 100%; height: 100%; object-fit: cover; }
+
+  .hero-band { background: var(--forest-d); text-align: center; padding: 22px 40px; }
+  .hero-band .fr { font-family: 'Poppins', sans-serif; font-weight: 700; font-style: italic; font-size: 16px; color: var(--yellow); margin-bottom: 4px; }
+  .hero-band .en { font-size: 14px; font-style: italic; color: rgba(237,231,208,.78); }
+
+  /* ═══════════════════════════════════════════════════
+     VISION
+  ═══════════════════════════════════════════════════ */
+  .vision { display: grid; grid-template-columns: 1fr 1fr; }
+  .vision-left  { background: var(--cream);  padding: 90px 70px 90px 80px; position: relative; }
+  .vision-right { background: var(--forest); padding: 90px 80px 90px 70px; position: relative; }
+
+  .point-list    { display: flex; flex-direction: column; gap: 14px; margin-top: 24px; }
+  .point-list li { display: flex; gap: 14px; align-items: flex-start; }
+  .point-dot     { width: 10px; height: 10px; border-radius: 50%; background: var(--orange); flex-shrink: 0; margin-top: 6px; }
+  .point-dot.y   { background: var(--yellow); }
+  .point-text    { font-weight: 600; font-size: 15px; line-height: 1.5; }
+
+  /* ═══════════════════════════════════════════════════
+     HUB
+  ═══════════════════════════════════════════════════ */
+  .hub { display: grid; grid-template-columns: 1fr 1fr; }
+  .hub-left  { background: var(--cream);  padding: 80px 60px 80px 80px; }
+  .hub-right { background: var(--forest); padding: 50px 60px; display: flex; flex-direction: column; gap: 18px; justify-content: center; }
+
+  .hub-img { border-radius: var(--r-img); overflow: hidden; flex: 1; min-height: 380px; }
+  .hub-img img { width: 100%; height: 100%; object-fit: cover; }
+  .hub-cap { text-align: center; font-style: italic; font-size: 13px; color: var(--yellow); }
+
+  .hub-items { display: flex; flex-direction: column; gap: 15px; margin-top: 24px; }
+  .hub-row   { display: flex; gap: 12px; align-items: flex-start; }
+  .hub-dot   { width: 10px; height: 10px; border-radius: 50%; background: var(--orange); flex-shrink: 0; margin-top: 6px; }
+  .hub-fr    { font-weight: 600; font-size: 15px; color: var(--black); line-height: 1.4; }
+  .hub-en    { font-size: 13px; color: var(--gray); margin-top: 2px; }
+
+  /* ═══════════════════════════════════════════════════
+     PARTNERS
+  ═══════════════════════════════════════════════════ */
+  .partners { background: var(--cream); padding: 90px 80px 80px; position: relative; overflow: hidden; }
+  .partners-intro { font-size: 15px; font-style: italic; color: var(--gray); margin-top: 12px; }
+
+  .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 44px; }
+
+  .p-card { border-radius: var(--r-card); overflow: hidden; transition: transform .25s, box-shadow .25s; }
+  .p-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,.14); }
+  .p-card .card-top  { height: 8px; }
+  .p-card .card-body { padding: 22px 20px 18px; }
+  .p-card .abbr      { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: 28px; margin-bottom: 10px; line-height: 1.1; }
+  .p-card .name-fr   { font-weight: 600; font-size: 13.5px; line-height: 1.4; margin-bottom: 4px; }
+  .p-card .name-en   { font-size: 12.5px; line-height: 1.4; }
+
+  .p-card.green { background: var(--forest); }
+  .p-card.green .card-top { background: var(--orange); }
+  .p-card.green .abbr    { color: var(--yellow); }
+  .p-card.green .name-fr { color: var(--white); }
+  .p-card.green .name-en { color: rgba(237,231,208,.68); }
+
+  .p-card.light { background: #F8F4E8; border: 2.5px solid var(--forest); }
+  .p-card.light .card-top { background: var(--forest); }
+  .p-card.light .abbr    { color: var(--forest); }
+  .p-card.light .name-fr { color: var(--black); }
+  .p-card.light .name-en { color: var(--gray); }
+
+  .partners-note { margin-top: 24px; background: var(--forest); border-radius: 10px; padding: 16px 24px; text-align: center; font-size: 14px; color: var(--cream); line-height: 1.5; }
+
+  /* ═══════════════════════════════════════════════════
+     SPACES
+  ═══════════════════════════════════════════════════ */
+  .spaces { display: grid; grid-template-columns: 2fr 5fr; }
+  .spaces-left  { background: var(--cream);  padding: 80px 44px 80px 80px; display: flex; flex-direction: column; justify-content: center; position: relative; }
+  .spaces-right { background: var(--forest); padding: 50px 48px 40px 32px; display: flex; flex-direction: column; justify-content: center; }
+
+  .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .photo-cell { border-radius: 16px; overflow: hidden; }
+  .photo-cell img { width: 100%; height: 185px; object-fit: cover; display: block; transition: transform .35s; }
+  .photo-cell:hover img { transform: scale(1.04); }
+  .photo-cap { padding: 9px 6px 4px; text-align: center; }
+  .photo-cap .fr { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 12px; color: var(--white); }
+  .photo-cap .en { font-size: 11px; color: rgba(237,231,208,.68); margin-top: 1px; }
+  .ai-note { font-size: 10px; font-style: italic; color: var(--gray); margin-top: 10px; }
+
+  /* ═══════════════════════════════════════════════════
+     MORE SPACES
+  ═══════════════════════════════════════════════════ */
+  .more-spaces { background: var(--cream); padding: 80px 80px 50px; position: relative; overflow: hidden; }
+  .more-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 1.85fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 16px;
+    margin-top: 40px;
+    height: 580px;
+  }
+  .more-cafe  { grid-row: 1 / 3; border-radius: var(--r-img); overflow: hidden; position: relative; }
+  .more-dc    { grid-column: 2;   border-radius: var(--r-img); overflow: hidden; position: relative; }
+  .more-now   { grid-column: 2;   border-radius: var(--r-img); overflow: hidden; position: relative; }
+  .more-cafe img,
+  .more-dc img,
+  .more-now img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .img-cap-ov {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: rgba(15,58,24,.88);
+    padding: 14px 18px 12px;
+    text-align: center;
+  }
+  .img-cap-ov .cap-fr { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 14px; color: var(--white); }
+  .img-cap-ov .cap-en { font-size: 12px; color: var(--yellow); margin-top: 2px; }
+  .more-tagline { text-align: center; margin-top: 28px; }
+  .more-tagline .t-fr { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 15px; color: var(--forest); }
+  .more-tagline .t-en { font-size: 13px; font-style: italic; color: var(--gray); margin-top: 4px; }
+
+  /* ═══════════════════════════════════════════════════
+     NEXT WAVE
+  ═══════════════════════════════════════════════════ */
+  .next-wave {
+    display: grid; grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+    position: relative;
+  }
+  .next-wave::before {
+    content: '';
+    position: absolute; left: 50%; top: 0;
+    width: 8px; height: 100%;
+    background: var(--orange);
+    transform: translateX(-50%);
+    z-index: 2;
+  }
+  .nw-left {
+    background: var(--cream);
+    padding: 80px 60px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .nw-right {
+    background: var(--forest-d);
+    padding: 80px 60px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 32px;
+    position: relative;
+  }
+  .nw-logo { width: 145px; height: 145px; margin-bottom: 20px; }
+  .nw-logo img { width: 100%; height: 100%; object-fit: contain; }
+  .nw-eyebrow { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--orange); margin-bottom: 10px; }
+  .nw-big  { font-family: 'Poppins', sans-serif; font-weight: 900; line-height: 1.0; color: var(--forest); font-size: clamp(44px, 6.5vw, 72px); }
+  .nw-huge { font-family: 'Poppins', sans-serif; font-weight: 900; line-height: 0.95; color: var(--orange); font-size: clamp(62px, 9vw, 96px); display: block; }
+  .nw-en   { font-family: 'Poppins', sans-serif; font-weight: 700; font-style: italic; font-size: clamp(20px, 2.5vw, 28px); color: var(--black); margin-top: 14px; }
+
+  .badge-rows { display: flex; flex-direction: column; gap: 28px; width: 100%; }
+  .badge-row  { display: flex; justify-content: center; gap: 24px; }
+  .nw-badge   { text-align: center; width: 112px; }
+  .nw-circle  { width: 96px; height: 96px; border-radius: 50%; background: rgba(15,58,24,.9); border: 3.5px solid var(--amber); display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; }
+  .nw-circle .val { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: 26px; color: var(--white); }
+  .nw-badge .bl { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 11px; }
+  .nw-badge .bs { font-size: 10px; color: rgba(237,231,208,.6); margin-top: 2px; }
+  .nw-footer { text-align: center; }
+  .nw-footer .mfr { font-family: 'Poppins', sans-serif; font-weight: 600; font-style: italic; font-size: 13px; color: rgba(237,231,208,.5); letter-spacing: .08em; }
+  .nw-footer .men { font-size: 11px; color: rgba(237,231,208,.34); margin-top: 4px; }
+
+  /* ═══════════════════════════════════════════════════
+     WHY / CLOSING
+  ═══════════════════════════════════════════════════ */
+  .why { background: var(--forest); display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+  .why-left  { padding: 90px 60px 90px 80px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }
+  .why-right { padding: 50px 60px; display: flex; align-items: center; justify-content: center; }
+  .why-img   { border-radius: 28px; overflow: hidden; width: 100%; height: 530px; box-shadow: 0 24px 60px rgba(0,0,0,.35); }
+  .why-img img { width: 100%; height: 100%; object-fit: cover; }
+
+  .why-eyebrow { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--amber); margin-bottom: 12px; }
+  .why-heading { font-family: 'Poppins', sans-serif; font-weight: 900; line-height: 1.1; font-size: clamp(38px, 5vw, 56px); color: var(--white); }
+  .why-heading .wplaza { color: var(--yellow); }
+  .why-heading .wnum   { color: var(--orange); }
+
+  .why-reasons { margin-top: 30px; display: flex; flex-direction: column; gap: 20px; }
+  .why-row   { display: flex; gap: 14px; align-items: flex-start; }
+  .why-dot   { width: 10px; height: 10px; border-radius: 50%; background: var(--orange); flex-shrink: 0; margin-top: 6px; }
+  .why-fr    { font-weight: 600; font-size: 15px; color: var(--white); line-height: 1.4; }
+  .why-en    { font-size: 13px; color: rgba(237,231,208,.75); margin-top: 3px; line-height: 1.4; }
+
+  .why-closing { margin-top: 40px; display: flex; align-items: flex-start; gap: 18px; }
+  .why-clog  { width: 68px; height: 68px; flex-shrink: 0; background: white; border-radius: 50%; padding: 4px; overflow: hidden; }
+  .why-clog img { width: 100%; height: 100%; object-fit: contain; border-radius: 50%; }
+  .why-qfr   { font-family: 'Poppins', sans-serif; font-weight: 700; font-style: italic; font-size: 14px; color: var(--yellow); line-height: 1.55; }
+  .why-qen   { font-size: 12.5px; font-style: italic; color: rgba(237,231,208,.75); margin-top: 5px; line-height: 1.5; }
+
+  /* ═══════════════════════════════════════════════════
+     FOOTER
+  ═══════════════════════════════════════════════════ */
+  footer {
+    background: var(--forest-d);
+    padding: 36px 80px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 20px;
+    border-top: 4px solid var(--orange);
+  }
+  .ft-brand { display: flex; align-items: center; gap: 14px; }
+  .ft-logo  { width: 44px; height: 44px; background: white; border-radius: 50%; padding: 3px; flex-shrink: 0; }
+  .ft-logo img { width: 100%; height: 100%; object-fit: contain; }
+  .ft-name  { font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 700; color: var(--cream); }
+  .ft-site  { font-size: 11px; color: var(--gray); }
+  .ft-mid   { text-align: center; }
+  .ft-plaza { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: 30px; color: var(--orange); }
+  .ft-pole  { font-size: 11px; color: rgba(237,231,208,.5); margin-top: 2px; }
+  .ft-right { text-align: right; }
+  .ft-loc   { font-size: 12px; color: rgba(237,231,208,.6); }
+  .ft-year  { font-size: 11px; color: rgba(119,119,119,.5); margin-top: 3px; }
+  .ft-note  { width: 100%; text-align: center; font-size: 10px; color: rgba(119,119,119,.5); padding-top: 16px; border-top: 1px solid rgba(237,231,208,.1); }
+
+  /* ═══════════════════════════════════════════════════
+     RESPONSIVE
+  ═══════════════════════════════════════════════════ */
+  @media (max-width: 960px) {
+    .hero-body, .vision, .hub, .spaces, .next-wave, .why { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .hub-right  { min-height: 360px; }
+    .more-grid  { grid-template-columns: 1fr; grid-template-rows: auto; height: auto; }
+    .more-cafe  { grid-row: auto; height: 300px; }
+    .more-dc, .more-now { height: 240px; }
+    .card-grid  { grid-template-columns: 1fr 1fr; }
+    .next-wave::before { display: none; }
+    .vision-left, .vision-right, .hub-left, .spaces-left, .nw-left, .why-left { padding: 60px 44px; }
+    footer { flex-direction: column; align-items: center; text-align: center; }
+    .ft-right { text-align: center; }
+    .nav { padding: 14px 24px; }
+    .nav-links { display: none; }
+  }
+  @media (max-width: 640px) {
+    .card-grid  { grid-template-columns: 1fr; }
+    .photo-grid { grid-template-columns: 1fr 1fr; }
+    .partners   { padding: 60px 32px; }
+    .more-spaces { padding: 60px 32px 40px; }
+  }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════
+     NAVBAR
+══════════════════════════════════════════════════ -->
+<nav class="nav">
+  <div class="nav-brand">
+    <div class="nav-logo"><img src="scfpa-logo.png" alt="SCFPA"></div>
+    <span class="nav-name">PLAZA <span>88</span></span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#vision">Vision</a></li>
+    <li><a href="#hub">Le Carrefour</a></li>
+    <li><a href="#partners">Partenaires</a></li>
+    <li><a href="#spaces">Espaces</a></li>
+    <li><a href="#next-wave">La Prochaine Vague</a></li>
+    <li><a href="#why">Pourquoi?</a></li>
+    <li><a href="index.html" style="color:var(--yellow);border:1px solid rgba(240,200,64,.3);padding:5px 12px;border-radius:20px;">← scfpa.ca</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════════════════════════════════════════════
+     HERO
+══════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-stripe"></div>
+  <div class="hero-body">
+
+    <div class="hero-left fade-up">
+      <div class="hero-ghost">88</div>
+
+      <div class="hero-eyebrow">
+        <div class="hero-elog">
+          <img src="scfpa-logo.png" alt="SCFPA Logo">
+        </div>
+        <div>
+          <div class="hero-ename">Société Canadienne-Française de Prince Albert</div>
+          <div class="hero-esite">scfpa.ca</div>
+        </div>
+      </div>
+
+      <div class="hero-title">
+        <span class="plaza">PLAZA</span>
+        <span class="eee">88</span>
+      </div>
+
+      <hr class="dash" style="width:78%; margin: 22px 0;">
+
+      <div class="hero-sub-fr">Pôle Francophone Régional</div>
+      <div class="hero-sub-en">Regional Francophone Hub</div>
+      <div class="hero-loc">📍 Prince Albert, Saskatchewan</div>
+
+      <div class="hero-badges">
+        <span class="tag">Présentation 2025</span>
+        <span class="tag orange">Bilingue / Bilingual</span>
+      </div>
+    </div>
+
+    <div class="hero-right fade-up d1">
+      <div class="hero-img">
+        <img src="PLAZA 88/IMAGE NOW.jpg" alt="Plaza 88 — aujourd'hui">
+      </div>
+    </div>
+
+  </div>
+  <div class="checker"></div>
+  <div class="hero-band">
+    <div class="fr">« Un espace. Une communauté. Un avenir. »</div>
+    <div class="en">One Space. One Community. One Future.</div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════
+     LA VISION
+══════════════════════════════════════════════════ -->
+<section id="vision" class="vision">
+
+  <div class="vision-left">
+    <span class="tag" style="margin-bottom: 28px; align-self: flex-start;">SCFPA</span>
+    <div class="fade-up">
+      <h2 class="t-h1 c-forest">La Vision</h2>
+      <p class="t-sub c-orange" style="margin-top: 8px;">Notre raison d'être</p>
+      <hr class="dash" style="margin: 22px 0;">
+      <ul class="point-list">
+        <li><span class="point-dot"></span><span class="point-text">Regrouper les organismes francophones sous un même toit</span></li>
+        <li><span class="point-dot"></span><span class="point-text">Offrir des espaces modernes et multifonctionnels</span></li>
+        <li><span class="point-dot"></span><span class="point-text">Stimuler l'économie et créer des emplois en français</span></li>
+        <li><span class="point-dot"></span><span class="point-text">Accueillir une formation postsecondaire en français</span></li>
+        <li><span class="point-dot"></span><span class="point-text">Soutenir la culture, les arts et la jeunesse</span></li>
+        <li><span class="point-dot"></span><span class="point-text">Assurer une visibilité francophone au centre-ville</span></li>
+      </ul>
+    </div>
+    <span class="sp c-forest" style="bottom:80px; right:60px;">✦</span>
+    <span class="sp c-orange" style="top:110px; right:40px; font-size:18px;">✦</span>
+  </div>
+
+  <div class="vision-right">
+    <span class="tag" style="margin-bottom: 28px; align-self: flex-start;">ENGLISH</span>
+    <div class="fade-up d1">
+      <h2 class="t-h1 c-white">The Vision</h2>
+      <p class="t-sub c-yellow" style="margin-top: 8px;">Our reason for being</p>
+      <hr class="dash light" style="margin: 22px 0;">
+      <ul class="point-list">
+        <li><span class="point-dot y"></span><span class="point-text c-white">Bring francophone organizations under one roof</span></li>
+        <li><span class="point-dot y"></span><span class="point-text c-white">Offer modern, versatile, multi-use spaces</span></li>
+        <li><span class="point-dot y"></span><span class="point-text c-white">Stimulate the economy and create French-language jobs</span></li>
+        <li><span class="point-dot y"></span><span class="point-text c-white">Welcome French-language post-secondary education</span></li>
+        <li><span class="point-dot y"></span><span class="point-text c-white">Support culture, the arts, and youth programs</span></li>
+        <li><span class="point-dot y"></span><span class="point-text c-white">Give the Francophonie a visible home downtown</span></li>
+      </ul>
+    </div>
+    <span class="sp c-cream" style="bottom:80px; left:60px; font-size:22px;">✦</span>
+    <span class="sp c-amber" style="top:100px; right:80px; font-size:16px;">✦</span>
+  </div>
+
+</section>
+<div class="checker"></div>
+
+
+<!-- ══════════════════════════════════════════════════
+     LE CARREFOUR
+══════════════════════════════════════════════════ -->
+<section id="hub" class="hub">
+
+  <div class="hub-left">
+    <div class="fade-up">
+      <h2 class="t-h1 c-forest">Le Carrefour</h2>
+      <p class="t-sub c-orange" style="margin-top: 8px;">The Hub — Ce que Plaza 88 contiendra</p>
+      <hr class="dash" style="margin: 22px 0;">
+      <div class="hub-items">
+        <div class="hub-row"><div class="hub-dot"></div><div><div class="hub-fr">20+ Bureaux communautaires</div><div class="hub-en">20+ Community offices</div></div></div>
+        <div class="hub-row"><div class="hub-dot"></div><div><div class="hub-fr">Collège Mathieu — Éducation postsecondaire en français</div><div class="hub-en">Collège Mathieu — French post-secondary education</div></div></div>
+        <div class="hub-row"><div class="hub-dot"></div><div><div class="hub-fr">Galerie d'art francophone</div><div class="hub-en">Francophone Art Gallery Hallway</div></div></div>
+        <div class="hub-row"><div class="hub-dot"></div><div><div class="hub-fr">Studio Gaetan Benoit — Studio de musique</div><div class="hub-en">Studio Gaetan Benoit — Music Studio</div></div></div>
+        <div class="hub-row"><div class="hub-dot"></div><div><div class="hub-fr">Studio vidéo et loge verte</div><div class="hub-en">Video Studio and Green Room</div></div></div>
+        <div class="hub-row"><div class="hub-dot"></div><div><div class="hub-fr">Gymnase — Camp FrancoFun et sports francophones</div><div class="hub-en">Gymnasium — Camp FrancoFun and Francophone sports</div></div></div>
+        <div class="hub-row"><div class="hub-dot"></div><div><div class="hub-fr">Cafétéria et cuisine industrielle</div><div class="hub-en">Cafeteria and industrial kitchen</div></div></div>
+        <div class="hub-row"><div class="hub-dot"></div><div><div class="hub-fr">Salles d'événements (déjà louées annuellement)</div><div class="hub-en">Event rooms (already leased annually)</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hub-right">
+    <div class="hub-img fade-up d1">
+      <img src="PLAZA 88/SCFPA OFFICE.png" alt="Bureaux SCFPA">
+    </div>
+    <p class="hub-cap fade-up d2">Le hub de la francophonie du nord — The hub of Northern Francophonie</p>
+  </div>
+
+</section>
+<div class="checker"></div>
+
+
+<!-- ══════════════════════════════════════════════════
+     NOS PARTENAIRES
+══════════════════════════════════════════════════ -->
+<section id="partners" class="partners">
+  <div class="fade-up">
+    <h2 class="t-h1 c-forest">Nos Partenaires <span class="c-orange">— Our Partners</span></h2>
+    <hr class="dash" style="margin-top: 16px; margin-bottom: 0;">
+    <p class="partners-intro">Six organismes confirmés réunis sous un même toit. &nbsp;Six confirmed organizations, all under one roof.</p>
+  </div>
+
+  <div class="card-grid">
+    <div class="p-card green fade-up">
+      <div class="card-top"></div>
+      <div class="card-body">
+        <div class="abbr">APF</div>
+        <div class="name-fr">Association des parents francophones</div>
+        <div class="name-en">Association of Francophone Parents</div>
+      </div>
+    </div>
+    <div class="p-card light fade-up d1">
+      <div class="card-top"></div>
+      <div class="card-body">
+        <div class="abbr">SAIF</div>
+        <div class="name-fr">Services d'aide aux immigrants francophones</div>
+        <div class="name-en">Francophone Immigration Support Services</div>
+      </div>
+    </div>
+    <div class="p-card green fade-up d2">
+      <div class="card-top"></div>
+      <div class="card-body">
+        <div class="abbr">CFA</div>
+        <div class="name-fr">Carrefour francophone</div>
+        <div class="name-en">Francophone Community Organization</div>
+      </div>
+    </div>
+    <div class="p-card light fade-up">
+      <div class="card-top"></div>
+      <div class="card-body">
+        <div class="abbr" style="font-size: 20px; line-height: 1.2;">Collège<br>Mathieu</div>
+        <div class="name-fr">Éducation postsecondaire en français</div>
+        <div class="name-en">French-language Post-secondary Education</div>
+      </div>
+    </div>
+    <div class="p-card green fade-up d1">
+      <div class="card-top"></div>
+      <div class="card-body">
+        <div class="abbr">SCFPA</div>
+        <div class="name-fr">Société canadienne-française de Prince Albert</div>
+        <div class="name-en">Canadian French Society of Prince Albert</div>
+      </div>
+    </div>
+    <div class="p-card light fade-up d2">
+      <div class="card-top"></div>
+      <div class="card-body">
+        <div class="abbr">AJF</div>
+        <div class="name-fr">Association jeunesse francophone</div>
+        <div class="name-en">Francophone Youth Association</div>
+      </div>
+    </div>
+    <div class="p-card green fade-up">
+      <div class="card-top"></div>
+      <div class="card-body">
+        <div class="abbr">CECS</div>
+        <div class="name-fr">Partenaire communautaire</div>
+        <div class="name-en">Community Partner</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="partners-note fade-up">
+    + Espaces additionnels disponibles pour entrepreneurs de la communauté francophone &nbsp;/&nbsp; Additional spaces available for francophone community entrepreneurs
+  </div>
+
+  <span class="sp c-forest" style="top:44px; right:80px;">✦</span>
+  <span class="sp c-orange" style="bottom:100px; left:40px; font-size:20px;">✦</span>
+</section>
+<div class="checker-orange"></div>
+
+
+<!-- ══════════════════════════════════════════════════
+     LES ESPACES
+══════════════════════════════════════════════════ -->
+<section id="spaces" class="spaces">
+
+  <div class="spaces-left">
+    <div class="fade-up">
+      <h2 class="t-h1 c-forest" style="line-height: 1.05;">Les<br>Espaces</h2>
+      <p class="t-sub c-orange" style="margin-top: 8px;">The Spaces</p>
+      <hr class="dash" style="margin: 20px 0;">
+      <p class="t-body" style="margin-bottom: 14px;">Chaque espace a été imaginé pour servir notre communauté — de la scène au gymnase, du studio à la galerie.</p>
+      <p class="t-sm c-gray">Every space was designed to serve our community — from stage to gym, studio to gallery.</p>
+      <div style="margin-top: 32px;">
+        <img src="scfpa-logo.png" alt="SCFPA" style="width: 80px; height: 80px; object-fit: contain;">
+      </div>
+      <p class="ai-note">* Images générées avec aide IA pour illustrer la vision<br>AI-assisted images to visualize the vision</p>
+    </div>
+    <span class="sp c-forest" style="bottom:60px; right:30px; font-size:20px;">✦</span>
+  </div>
+
+  <div class="spaces-right">
+    <div class="photo-grid fade-up d1">
+      <div class="photo-cell">
+        <img src="PLAZA 88/ART GALLERY.png" alt="Galerie d'art francophone">
+        <div class="photo-cap"><div class="fr">Galerie d'art</div><div class="en">Art Gallery</div></div>
+      </div>
+      <div class="photo-cell">
+        <img src="PLAZA 88/GYM.png" alt="Gymnase communautaire">
+        <div class="photo-cap"><div class="fr">Gymnase</div><div class="en">Gymnasium</div></div>
+      </div>
+      <div class="photo-cell">
+        <img src="PLAZA 88/MUSIC STUDIO.png" alt="Studio de musique">
+        <div class="photo-cap"><div class="fr">Studio Musique</div><div class="en">Music Studio</div></div>
+      </div>
+      <div class="photo-cell">
+        <img src="PLAZA 88/STUDIO VIDEO.png" alt="Studio vidéo">
+        <div class="photo-cap"><div class="fr">Studio Vidéo</div><div class="en">Video Studio</div></div>
+      </div>
+      <div class="photo-cell">
+        <img src="PLAZA 88/GREEN ROOM.png" alt="Loge verte">
+        <div class="photo-cap"><div class="fr">Loge verte</div><div class="en">Green Room</div></div>
+      </div>
+      <div class="photo-cell">
+        <img src="PLAZA 88/MAJOR CONCERT VENUE.png" alt="Salle de spectacle">
+        <div class="photo-cap"><div class="fr">Grande salle</div><div class="en">Concert Venue</div></div>
+      </div>
+    </div>
+  </div>
+
+</section>
+<div class="checker"></div>
+
+
+<!-- ══════════════════════════════════════════════════
+     PLUS D'ESPACES
+══════════════════════════════════════════════════ -->
+<section id="more-spaces" class="more-spaces">
+  <div class="fade-up">
+    <h2 class="t-h2 c-forest">Plus d'Espaces <span class="c-orange" style="font-size: 0.65em; font-weight: 700;">— More Spaces</span></h2>
+    <hr class="dash" style="margin: 16px 0 0;">
+  </div>
+
+  <div class="more-grid fade-up d1">
+    <div class="more-cafe">
+      <img src="PLAZA 88/CAFE.png" alt="Cafétéria">
+      <div class="img-cap-ov">
+        <div class="cap-fr">Cafétéria &amp; Cuisine industrielle</div>
+        <div class="cap-en">Cafeteria &amp; Industrial Kitchen — catering company already operating</div>
+      </div>
+    </div>
+    <div class="more-dc">
+      <img src="PLAZA 88/DAY CARE.png" alt="Services de garde">
+      <div class="img-cap-ov">
+        <div class="cap-fr">Services de garde / Day Care</div>
+        <div class="cap-en">Child care services</div>
+      </div>
+    </div>
+    <div class="more-now">
+      <img src="PLAZA 88/IMAGE NOW.jpg" alt="Plaza 88 aujourd'hui">
+      <div class="img-cap-ov">
+        <div class="cap-fr">Plaza 88 — Aujourd'hui / Today</div>
+        <div class="cap-en">The building as it stands — ready for transformation</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="more-tagline fade-up d2">
+    <p class="t-fr">L'espace existe déjà. La communauté est prête. <span class="c-orange">Il est temps d'agir.</span></p>
+    <p class="t-en">The space already exists. The community is ready. It's time to act.</p>
+  </div>
+
+  <span class="sp c-forest" style="top:44px; right:60px;">✦</span>
+  <span class="sp c-orange" style="top:200px; left:36px; font-size:18px;">✦</span>
+</section>
+<div class="checker-orange"></div>
+
+
+<!-- ══════════════════════════════════════════════════
+     LA PROCHAINE VAGUE
+══════════════════════════════════════════════════ -->
+<section id="next-wave" class="next-wave">
+
+  <div class="nw-left">
+    <div class="fade-up">
+      <div class="nw-logo">
+        <img src="scfpa-logo.png" alt="SCFPA Logo">
+      </div>
+      <p class="nw-eyebrow">SCFPA Présente / Presents</p>
+      <p class="nw-big">LA PROCHAINE<span class="nw-huge">VAGUE</span></p>
+      <p class="nw-en">The Next Wave</p>
+    </div>
+    <span class="sp c-forest" style="top:80px; left:60px;">✦</span>
+    <span class="sp c-amber" style="bottom:120px; right:80px; font-size:20px;">✦</span>
+    <span class="sp c-orange" style="top:210px; right:52px; font-size:16px;">✦</span>
+  </div>
+
+  <div class="nw-right">
+    <div class="badge-rows fade-up d1">
+      <div class="badge-row">
+        <div class="nw-badge">
+          <div class="nw-circle" style="border-color:var(--amber);">
+            <span class="val">20+</span>
+          </div>
+          <div class="bl" style="color:var(--amber);">Bureaux</div>
+          <div class="bs">Offices</div>
+        </div>
+        <div class="nw-badge">
+          <div class="nw-circle" style="border-color:var(--yellow);">
+            <span class="val">7</span>
+          </div>
+          <div class="bl" style="color:var(--yellow);">Partenaires</div>
+          <div class="bs">Partners</div>
+        </div>
+      </div>
+      <div class="badge-row">
+        <div class="nw-badge">
+          <div class="nw-circle" style="border-color:#88D060;">
+            <span class="val">1er</span>
+          </div>
+          <div class="bl" style="color:#88D060;">Hub postsec.</div>
+          <div class="bs">Post-sec. Hub</div>
+        </div>
+        <div class="nw-badge">
+          <div class="nw-circle" style="border-color:#80CCFF;">
+            <span class="val">#1</span>
+          </div>
+          <div class="bl" style="color:#80CCFF;">Du Nord</div>
+          <div class="bs">In the North</div>
+        </div>
+      </div>
+    </div>
+    <div class="nw-footer fade-up d2">
+      <p class="mfr">Bâtir &nbsp;·&nbsp; Grandir &nbsp;·&nbsp; Rayonner</p>
+      <p class="men">Build &nbsp;·&nbsp; Grow &nbsp;·&nbsp; Shine</p>
+    </div>
+  </div>
+
+</section>
+<div class="checker-on-forest"></div>
+
+
+<!-- ══════════════════════════════════════════════════
+     POURQUOI PLAZA 88?
+══════════════════════════════════════════════════ -->
+<section id="why" class="why">
+
+  <div class="why-left">
+    <div class="fade-up">
+      <p class="why-eyebrow">Pourquoi Plaza 88?</p>
+      <h2 class="why-heading">Why <span class="wplaza">Plaza </span><span class="wnum">88?</span></h2>
+      <hr class="dash light" style="margin: 24px 0;">
+      <div class="why-reasons">
+        <div class="why-row">
+          <div class="why-dot"></div>
+          <div><div class="why-fr">Un bâtiment déjà en activité</div><div class="why-en">Ready for transformation — no starting from zero.</div></div>
+        </div>
+        <div class="why-row">
+          <div class="why-dot"></div>
+          <div><div class="why-fr">7 partenaires confirmés</div><div class="why-en">APF, SAIF, CFA, Collège Mathieu, SCFPA, AJF, CECS — already committed.</div></div>
+        </div>
+        <div class="why-row">
+          <div class="why-dot"></div>
+          <div><div class="why-fr">Modèle financier viable dès l'an 1</div><div class="why-en">Surplus from Year 1. Growing to $483K by Year 5.</div></div>
+        </div>
+        <div class="why-row">
+          <div class="why-dot"></div>
+          <div><div class="why-fr">Emplois francophones</div><div class="why-en">Create jobs, attract talent, anchor the community.</div></div>
+        </div>
+        <div class="why-row">
+          <div class="why-dot"></div>
+          <div><div class="why-fr">Une génération entière servie</div><div class="why-en">Arts, sports, culture, education — all under one roof.</div></div>
+        </div>
+      </div>
+      <div class="why-closing" style="margin-top: 40px;">
+        <div class="why-clog"><img src="scfpa-logo.png" alt="SCFPA"></div>
+        <div>
+          <p class="why-qfr">« Ensemble, bâtissons le carrefour francophone du nord. »</p>
+          <p class="why-qen">"Together, let's build the Francophone hub of the North."</p>
+        </div>
+      </div>
+    </div>
+    <span class="sp c-cream" style="top:80px; right:60px; font-size:24px;">✦</span>
+    <span class="sp c-amber" style="bottom:120px; left:40px; font-size:18px;">✦</span>
+  </div>
+
+  <div class="why-right">
+    <div class="why-img fade-up d1">
+      <img src="PLAZA 88/ART GALLERY.png" alt="Galerie d'art francophone">
+    </div>
+  </div>
+
+</section>
+<div class="checker-on-forest"></div>
+
+
+<!-- ══════════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════════ -->
+<footer>
+  <div class="ft-brand">
+    <div class="ft-logo"><img src="scfpa-logo.png" alt="SCFPA Logo"></div>
+    <div>
+      <div class="ft-name">Société Canadienne-Française de Prince Albert</div>
+      <div class="ft-site">scfpa.ca</div>
+    </div>
+  </div>
+  <div class="ft-mid">
+    <div class="ft-plaza">PLAZA 88</div>
+    <div class="ft-pole">Pôle Francophone Régional</div>
+  </div>
+  <div class="ft-right">
+    <div class="ft-loc">Prince Albert, Saskatchewan</div>
+    <div class="ft-year">Présentation 2025</div>
+  </div>
+  <div class="ft-note">* Images générées avec aide IA pour illustrer la vision / AI-assisted images to visualize the vision</div>
+</footer>
+
+
+<script>
+  // Scroll fade-in animation
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.10 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
