@@ -115,6 +115,18 @@
     .event-info h4{font-size:.97rem;font-weight:800;margin-bottom:3px;}
     .event-info p{color:var(--muted);font-size:.82rem;}
     .ebadge{margin-left:auto;border-radius:20px;padding:3px 12px;font-size:.72rem;font-weight:800;white-space:nowrap;background:rgba(245,168,0,.12);color:var(--gold);}
+    .event-rsvp{flex-shrink:0;padding:9px 16px!important;font-size:.72rem!important;}
+    .rsvp-modal{display:none;position:fixed;inset:0;z-index:700;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.82);backdrop-filter:blur(8px);}
+    .rsvp-modal.open{display:flex;}
+    .rsvp-card{width:min(520px,100%);max-height:92vh;overflow:auto;background:#101b11;border:1px solid rgba(245,168,0,.25);border-radius:20px;padding:28px;box-shadow:0 30px 80px rgba(0,0,0,.55);}
+    .rsvp-card h3{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--gold);margin:0 0 5px;}
+    .rsvp-event-name{color:var(--text);font-weight:800;margin-bottom:5px;}
+    .rsvp-capacity{color:var(--muted);font-size:.8rem;margin-bottom:22px;}
+    .rsvp-field{display:block;margin-bottom:14px;}
+    .rsvp-field span{display:block;font-size:.75rem;font-weight:800;margin-bottom:6px;color:var(--muted);}
+    .rsvp-field input{width:100%;padding:12px 13px;border:1px solid rgba(255,255,255,.12);border-radius:10px;background:rgba(255,255,255,.05);color:var(--text);font:inherit;}
+    .rsvp-actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:20px;}
+    .rsvp-message{display:none;padding:12px;border-radius:10px;margin:14px 0;background:rgba(76,175,80,.12);color:var(--voix-light);font-size:.86rem;}
     .calendar-embed{border-radius:var(--radius);overflow:hidden;border:1px solid rgba(245,168,0,.1);margin-top:32px;}
     .calendar-embed iframe{width:100%;border:none;display:block;}
     .hub-calendar{padding:22px;background:var(--card);min-height:220px;}
@@ -352,6 +364,7 @@
           <p data-fr="Prince Albert · 17–22 septembre 2026" data-en="Prince Albert · Sept 17–22, 2026">Prince Albert · 17–22 septembre 2026</p>
         </div>
         <div class="ebadge">Voix Croisées</div>
+        <button type="button" class="btn btn-outline event-rsvp" onclick="openRsvp(this)" data-fr="S'inscrire" data-en="RSVP">S'inscrire</button>
       </div>
       <div class="event-item reveal">
         <div class="edb"><div class="day">6</div><div class="month" data-fr="Nov" data-en="Nov">Nov</div></div>
@@ -360,6 +373,7 @@
           <p data-fr="Prince Albert · 6–8 novembre 2026" data-en="Prince Albert · Nov 6–8, 2026">Prince Albert · 6–8 novembre 2026</p>
         </div>
         <div class="ebadge" data-fr="Festival" data-en="Festival">Festival</div>
+        <button type="button" class="btn btn-outline event-rsvp" onclick="openRsvp(this)" data-fr="S'inscrire" data-en="RSVP">S'inscrire</button>
       </div>
       <div class="event-item reveal">
         <div class="edb"><div class="day">29</div><div class="month" data-fr="Nov" data-en="Nov">Nov</div></div>
@@ -368,6 +382,7 @@
           <p data-fr="Prince Albert · Souper spectacle" data-en="Prince Albert · Dinner show">Prince Albert · Souper spectacle</p>
         </div>
         <div class="ebadge" data-fr="Spectacle" data-en="Show">Spectacle</div>
+        <button type="button" class="btn btn-outline event-rsvp" onclick="openRsvp(this)" data-fr="S'inscrire" data-en="RSVP">S'inscrire</button>
       </div>
       <template>
         <article class="event-item">
@@ -377,7 +392,7 @@
             <p class="event-meta"><span data-jamfam-item="venue"></span><span data-jamfam-item="address"></span><span data-jamfam-item-en="time_en" data-jamfam-item-fr="time_fr"></span></p>
           </div>
           <div class="ebadge" data-jamfam-item="status"></div>
-          <a class="btn btn-outline event-ticket" data-jamfam-item="ticket_url" data-fr="Détails" data-en="Details">Détails</a>
+          <button type="button" class="btn btn-outline event-rsvp" onclick="openRsvp(this)" data-fr="S'inscrire" data-en="RSVP">S'inscrire</button>
         </article>
       </template>
     </div>
@@ -764,6 +779,28 @@
   </div>
 </section>
 
+<!-- SCFPA EVENT RSVP -->
+<div class="rsvp-modal" id="rsvp-modal" onclick="closeRsvpOutside(event)">
+  <div class="rsvp-card" role="dialog" aria-modal="true" aria-labelledby="rsvp-title">
+    <h3 id="rsvp-title" data-fr="Inscription à l'événement" data-en="Event RSVP">Inscription à l'événement</h3>
+    <div class="rsvp-event-name" id="rsvp-event-name"></div>
+    <div class="rsvp-capacity" id="rsvp-capacity" data-fr="Vérification des places disponibles…" data-en="Checking available spots…">Vérification des places disponibles…</div>
+    <div class="rsvp-message" id="rsvp-message" data-fr="Merci! Votre inscription a été envoyée à la SCFPA." data-en="Thank you! Your RSVP was sent to SCFPA.">Merci! Votre inscription a été envoyée à la SCFPA.</div>
+    <form id="rsvp-form">
+      <input type="hidden" name="event" id="rsvp-event-field">
+      <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
+      <label class="rsvp-field"><span data-fr="Nom complet" data-en="Full name">Nom complet</span><input type="text" name="name" required autocomplete="name"></label>
+      <label class="rsvp-field"><span data-fr="Courriel" data-en="Email">Courriel</span><input type="email" name="email" required autocomplete="email"></label>
+      <label class="rsvp-field"><span data-fr="Nombre total de personnes" data-en="Total number of attendees">Nombre total de personnes</span><input type="number" name="party_size" value="1" min="1" max="60" required></label>
+      <p style="font-size:.72rem;color:var(--muted);margin-top:8px" data-fr="Vos coordonnées servent uniquement à gérer cette inscription à l'événement." data-en="Your contact information is used only to manage this event registration.">Vos coordonnées servent uniquement à gérer cette inscription à l'événement.</p>
+      <div class="rsvp-actions">
+        <button type="button" class="btn btn-outline" onclick="closeRsvp()" data-fr="Annuler" data-en="Cancel">Annuler</button>
+        <button type="submit" class="btn btn-green" data-fr="Confirmer l'inscription" data-en="Confirm RSVP">Confirmer l'inscription</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <!-- PDF VIEWER MODAL -->
 <div id="pdf-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:600;align-items:center;justify-content:center;padding:16px;">
   <div style="background:#0e1a0f;border:1px solid rgba(245,168,0,.2);border-radius:18px;width:100%;max-width:860px;height:90vh;display:flex;flex-direction:column;overflow:hidden;">
@@ -1047,6 +1084,57 @@ function closePDF(){
   document.body.style.overflow='';
 }
 
+/* SCFPA EVENT RSVP */
+const RSVP_API='https://jamfam-client-hub.onrender.com/api/public/rsvp';
+const SCFPA_SITE_ID='aa6c860a-b745-41f0-84cb-062804ff09a7';
+let activeRsvpKey='';
+document.querySelectorAll('.event-list > .event-item .event-rsvp').forEach(button=>button.hidden=true);
+function rsvpEventKey(item){
+  if(item.registration_key)return String(item.registration_key).trim().toLowerCase().slice(0,180);
+  return [item.date,item.title_fr||item.title_en||'event'].join('-').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,180);
+}
+async function openRsvp(button){
+  const card=button.closest('.event-item');
+  const title=card?.querySelector('.event-info h4')?.textContent?.trim()||'Événement SCFPA';
+  const date=[card?.querySelector('.day')?.textContent?.trim(),card?.querySelector('.month')?.textContent?.trim()].filter(Boolean).join(' ');
+  const label=[title,date].filter(Boolean).join(' — ');
+  activeRsvpKey=button.dataset.eventKey||'';
+  if(!activeRsvpKey){alert(lang==='fr'?"L'inscription en ligne n'est pas activée pour cet événement.":'Online registration is not enabled for this event.');return;}
+  document.getElementById('rsvp-event-name').textContent=label;
+  document.getElementById('rsvp-event-field').value=label;
+  document.getElementById('rsvp-message').style.display='none';
+  document.getElementById('rsvp-form').style.display='block';
+  document.getElementById('rsvp-modal').classList.add('open');
+  document.body.style.overflow='hidden';
+  const capacity=document.getElementById('rsvp-capacity');
+  capacity.textContent=lang==='fr'?'Vérification des places disponibles…':'Checking available spots…';
+  try{
+    const response=await fetch(`${RSVP_API}/sites/${SCFPA_SITE_ID}/events/${encodeURIComponent(activeRsvpKey)}`);
+    const data=await response.json();if(!response.ok)throw new Error();
+    capacity.textContent=lang==='fr'?`${data.remaining} place${data.remaining===1?'':'s'} disponible${data.remaining===1?'':'s'} sur ${data.capacity}.`:`${data.remaining} of ${data.capacity} spots remaining.`;
+    const party=document.querySelector('#rsvp-form [name="party_size"]');party.max=Math.max(1,Number(data.remaining));
+    const submit=document.querySelector('#rsvp-form [type="submit"]');submit.disabled=Number(data.remaining)<1;
+    if(Number(data.remaining)<1)submit.textContent=lang==='fr'?'Complet':'Full';
+  }catch{capacity.textContent=lang==='fr'?'Les disponibilités seront confirmées lors de l’inscription.':'Availability will be confirmed when you register.';}
+}
+function closeRsvp(){document.getElementById('rsvp-modal').classList.remove('open');document.body.style.overflow='';}
+function closeRsvpOutside(event){if(event.target===document.getElementById('rsvp-modal'))closeRsvp();}
+document.getElementById('rsvp-form').addEventListener('submit',async function(event){
+  event.preventDefault();
+  const button=this.querySelector('[type="submit"]');button.disabled=true;
+  try{
+    const form=new FormData(this);
+    const response=await fetch(`${RSVP_API}/sites/${SCFPA_SITE_ID}/events/${encodeURIComponent(activeRsvpKey)}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:form.get('name'),email:form.get('email'),partySize:Number(form.get('party_size')),website:form.get('website')})});
+    const data=await response.json();
+    if(!response.ok){const error=new Error(data.error||'Submission failed');error.code=data.code;throw error;}
+    this.style.display='none';document.getElementById('rsvp-message').style.display='block';this.reset();
+    document.querySelectorAll(`.event-rsvp[data-event-key="${CSS.escape(activeRsvpKey)}"]`).forEach(el=>{if(Number(data.remaining)<1){el.disabled=true;el.textContent=lang==='fr'?'Complet':'Full';}});
+  }catch(error){
+    const message=error.code==='EVENT_FULL'?(lang==='fr'?"Il ne reste pas assez de places pour ce groupe.":'There are not enough spots remaining for this group.'):error.code==='ALREADY_REGISTERED'?(lang==='fr'?"Ce courriel est déjà inscrit à cet événement.":'This email is already registered for this event.'):(lang==='fr'?"L'inscription n'a pas pu être envoyée. Veuillez réessayer.":'Your RSVP could not be sent. Please try again.');
+    alert(message);
+  }finally{button.disabled=false;}
+});
+
 /* JAMFAM EVENTS CALENDAR */
 document.addEventListener('jamfam:content-loaded',function(event){
   const field=(event.detail.fields||[]).find(f=>f.page_key==='events'&&f.field_key==='items');
@@ -1060,6 +1148,12 @@ document.addEventListener('jamfam:content-loaded',function(event){
   items.sort((a,b)=>a.date.localeCompare(b.date)).forEach(item=>{const key=item.date.slice(0,7);if(!groups.has(key))groups.set(key,[]);groups.get(key).push(item);});
   document.querySelectorAll('.event-list>[data-jamfam-generated] .event-item').forEach((card,index)=>{
     const item=items[index];if(!item)return;
+    const rsvpButton=card.querySelector('.event-rsvp');
+    if(rsvpButton){
+      const enabled=String(item.registration_enabled||'yes').toLowerCase()!=='no';
+      rsvpButton.hidden=!enabled;
+      rsvpButton.dataset.eventKey=rsvpEventKey(item);
+    }
     const date=new Date(item.date+'T00:00:00Z');
     const day=card.querySelector('.day');const month=card.querySelector('.month');
     if(day)day.textContent=String(date.getUTCDate());
