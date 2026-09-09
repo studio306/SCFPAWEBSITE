@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Voix Croisées – Saskatchewan | SCFPA</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --green:#2D6A2E; --green-light:#4A9E3F;
+    --orange:#D4520A; --gold:#F5A800;
+    --dark:#0C0F0A; --card:#141910;
+    --text:#F2F0E8; --muted:#8A9080;
+    --radius:16px;
+    --voix-deep:#0F3D1A; --voix-green:#1E6B30; --voix-light:#4CAF50;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--dark);color:var(--text);overflow-x:hidden;}
+
+  /* ── NAV ── */
+  nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 36px;background:rgba(12,15,10,0.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(76,175,80,.15);}
+  .nav-brand{display:flex;align-items:center;gap:12px;}
+  .nav-brand img{height:40px;width:auto;display:block;}
+  .nav-brand span{font-family:'Bebas Neue',sans-serif;font-size:1.15rem;letter-spacing:1px;color:#fff;}
+  .nav-brand span em{font-style:normal;color:var(--voix-light);}
+  .nav-right{display:flex;align-items:center;gap:14px;}
+  .back-link{color:var(--gold);border:1px solid rgba(245,168,0,.3);padding:6px 14px;border-radius:20px;text-decoration:none;font-size:.78rem;font-weight:700;transition:all .2s;}
+  .back-link:hover{background:var(--gold);color:#0C0F0A;}
+  .lang-toggle{display:flex;gap:5px;}
+  .lang-btn{background:transparent;border:1.5px solid var(--muted);color:var(--muted);padding:3px 10px;border-radius:20px;cursor:pointer;font-size:.72rem;font-weight:800;transition:all .2s;font-family:inherit;}
+  .lang-btn.active{background:var(--gold);border-color:var(--gold);color:#0C0F0A;}
+
+  /* ── HERO ── */
+  .hero{position:relative;padding:64px 24px 56px;text-align:center;background:radial-gradient(ellipse at 50% 0%,rgba(30,107,48,.25) 0%,transparent 65%);border-bottom:1px solid rgba(76,175,80,.12);}
+  .hero-eyebrow{font-size:.72rem;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:var(--voix-light);margin-bottom:14px;}
+  .hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,10vw,6.5rem);line-height:1;letter-spacing:2px;background:linear-gradient(90deg,var(--gold),var(--voix-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:14px;}
+  .hero-sub{font-size:clamp(.92rem,1.8vw,1.15rem);color:var(--muted);max-width:560px;margin:0 auto 22px;line-height:1.6;}
+  .hero-badges{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;}
+  .badge{display:inline-block;padding:5px 15px;border-radius:30px;font-size:.72rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;}
+  .bv{background:rgba(30,107,48,.2);color:var(--voix-light);border:1px solid rgba(76,175,80,.3);}
+  .bg{background:rgba(245,168,0,.12);color:var(--gold);border:1px solid rgba(245,168,0,.25);}
+  .bo{background:rgba(212,82,10,.12);color:var(--orange);border:1px solid rgba(212,82,10,.25);}
+
+  /* ── SECTIONS ── */
+  section{padding:64px 24px;}
+  .inner{max-width:900px;margin:0 auto;}
+  .s-label{font-size:.68rem;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:var(--voix-light);margin-bottom:8px;}
+  .s-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.9rem,4.5vw,2.9rem);line-height:1;margin-bottom:10px;letter-spacing:1px;}
+  .s-desc{font-size:.95rem;color:var(--muted);line-height:1.7;max-width:640px;margin-bottom:32px;}
+  .divider{width:52px;height:4px;border-radius:4px;margin:8px 0 20px;background:linear-gradient(90deg,var(--voix-green),var(--voix-light));}
+
+  #glance{background:linear-gradient(180deg,rgba(45,106,46,.06) 0%,transparent 100%);}
+  .event-list{display:flex;flex-direction:column;gap:12px;}
+  .event-item{display:flex;align-items:center;gap:18px;background:var(--card);border:1px solid rgba(76,175,80,.12);border-radius:var(--radius);padding:16px 22px;transition:transform .2s,border-color .2s;}
+  .event-item:hover{transform:translateX(5px);border-color:rgba(76,175,80,.3);}
+  .edb{min-width:58px;text-align:center;border-radius:10px;padding:9px 7px;background:linear-gradient(135deg,var(--voix-green),var(--voix-light));flex-shrink:0;}
+  .edb .day{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;line-height:1;}
+  .edb .month{font-size:.62rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;opacity:.9;}
+  .event-info h4{font-size:.97rem;font-weight:800;margin-bottom:3px;}
+  .event-info p{color:var(--muted);font-size:.83rem;line-height:1.5;}
+
+  #safety .s-label{color:var(--gold);}
+  .safety-list{display:flex;flex-direction:column;gap:14px;}
+  .safety-item{display:flex;gap:14px;align-items:flex-start;}
+  .safety-line{width:3px;min-height:100%;background:var(--voix-green);border-radius:2px;flex-shrink:0;margin-top:4px;}
+  .safety-item h4{font-weight:800;font-size:.94rem;color:#fff;margin-bottom:2px;}
+  .safety-item p{color:var(--muted);font-size:.85rem;line-height:1.5;}
+
+  #fly{background:linear-gradient(180deg,rgba(212,82,10,.05) 0%,transparent 100%);}
+  #fly .s-label{color:var(--orange);}
+  .fly-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  @media(max-width:600px){.fly-grid{grid-template-columns:1fr;}}
+  .fly-item{background:rgba(212,82,10,.08);border:1px solid rgba(212,82,10,.22);border-radius:10px;padding:14px 16px;font-size:.86rem;color:var(--text);line-height:1.4;}
+  .fly-note{margin-top:16px;font-size:.82rem;color:var(--muted);}
+  .fly-note a{color:var(--gold);}
+
+  #meeting .s-label{color:var(--voix-light);}
+  .meeting-banner{background:linear-gradient(135deg,rgba(30,107,48,.25),rgba(15,61,26,.4));border:1px solid rgba(76,175,80,.25);border-radius:var(--radius);padding:20px 24px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;}
+  .pulse-dot{width:9px;height:9px;border-radius:50%;background:var(--voix-light);flex-shrink:0;animation:pulse 2s infinite;margin-top:6px;}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(76,175,80,.4);}50%{box-shadow:0 0 0 8px rgba(76,175,80,0);}}
+  .meeting-text{flex:1;min-width:240px;}
+  .meeting-text strong{display:block;color:var(--voix-light);font-size:.95rem;margin-bottom:6px;}
+  .meeting-text p{font-size:.86rem;color:var(--muted);line-height:1.6;}
+  .meeting-text a{color:var(--gold);font-weight:700;text-decoration:none;}
+  .meeting-text a:hover{text-decoration:underline;}
+
+  #pack .s-label{color:var(--voix-light);}
+  .pack-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:700px){.pack-grid{grid-template-columns:1fr;}}
+  .form-card{background:rgba(15,61,26,.2);border:1px solid rgba(30,107,48,.28);border-radius:var(--radius);padding:22px 24px;}
+  .form-card h3{font-size:.92rem;font-weight:900;margin-bottom:6px;display:flex;justify-content:space-between;align-items:baseline;gap:10px;}
+  .form-card h3 .count{font-family:'Inter',sans-serif;font-size:.72rem;font-weight:700;color:var(--muted);white-space:nowrap;}
+  .check-group{display:flex;flex-direction:column;gap:4px;margin-top:10px;}
+  .check-item{display:flex;align-items:flex-start;gap:9px;font-size:.86rem;color:var(--text);cursor:pointer;padding:6px 8px;border-radius:8px;transition:background .15s;}
+  .check-item:hover{background:rgba(30,107,48,.15);}
+  .check-item input[type=checkbox]{accent-color:var(--voix-light);width:16px;height:16px;flex-shrink:0;cursor:pointer;margin-top:2px;}
+  .check-item span.done{color:var(--muted);text-decoration:line-through;}
+
+  /* ── FOOTER ── */
+  footer{background:var(--dark);border-top:1px solid rgba(255,255,255,.06);padding:28px 24px;text-align:center;color:var(--muted);font-size:.8rem;}
+  footer a{color:var(--gold);text-decoration:none;}
+  .footer-logos{display:flex;align-items:center;justify-content:center;gap:24px;margin-bottom:14px;flex-wrap:wrap;}
+  .footer-logos img{height:36px;width:auto;opacity:.75;filter:brightness(1.1);}
+
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease;}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <img src="voix-logo.png" alt="Voix Croisées" onerror="this.style.display='none'"/>
+    <span>SASKATCHEWAN <em>· Voix Croisées</em></span>
+  </div>
+  <div class="nav-right">
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
+    <a href="index.html#voix" class="back-link">← scfpa.ca</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-eyebrow" data-fr="Voix Croisées · Segment Saskatchewan" data-en="Voix Croisées · Saskatchewan Segment">Voix Croisées · Segment Saskatchewan</div>
+  <h1>Saskatchewan</h1>
+  <p class="hero-sub" data-fr="Liste de vérification et détails du séjour — 17 au 22 septembre 2026." data-en="Checklist and trip details — September 17–22, 2026.">Liste de vérification et détails du séjour — 17 au 22 septembre 2026.</p>
+  <div class="hero-badges">
+    <span class="badge bv" data-fr="6 étudiants" data-en="6 students">6 étudiants</span>
+    <span class="badge bg" data-fr="3 accompagnateurs" data-en="3 supervisors">3 accompagnateurs</span>
+    <span class="badge bo" data-fr="6 jours" data-en="6 days">6 jours</span>
+  </div>
+</header>
+
+<section id="glance">
+  <div class="inner">
+    <div class="s-label" data-fr="Programme" data-en="Program">Programme</div>
+    <h2 class="s-title" data-fr="En bref" data-en="At a Glance">En bref</h2>
+    <div class="divider"></div>
+    <p class="s-desc" data-fr="Les jeunes participants créent un documentaire bilingue explorant comment la rivière, les sentiers et le paysage nordique façonnent l'identité de Prince Albert, la porte du Nord." data-en="Participants create a bilingual documentary exploring how the river, trails and northern landscape shape Prince Albert's identity as the Gateway to the North.">Les jeunes participants créent un documentaire bilingue explorant comment la rivière, les sentiers et le paysage nordique façonnent l'identité de Prince Albert, la porte du Nord.</p>
+
+    <div class="event-list">
+      <div class="event-item reveal">
+        <div class="edb"><div class="day">17</div><div class="month" data-fr="Sept" data-en="Sept">Sept</div></div>
+        <div class="event-info">
+          <h4 data-fr="Arrivée et orientation" data-en="Arrival & Orientation">Arrivée et orientation</h4>
+          <p data-fr="Accueil à l'aéroport, ajustement des vélos, cours accéléré de canot, bienvenue à la SCFPA, souper au restaurant." data-en="Airport pickup, bike fitting, canoe crash course, SCFPA welcome, restaurant supper.">Accueil à l'aéroport, ajustement des vélos, cours accéléré de canot, bienvenue à la SCFPA, souper au restaurant.</p>
+        </div>
+      </div>
+      <div class="event-item reveal">
+        <div class="edb"><div class="day">18</div><div class="month" data-fr="Sept" data-en="Sept">Sept</div></div>
+        <div class="event-info">
+          <h4 data-fr="Excursion en canot" data-en="Canoe Trip">Excursion en canot</h4>
+          <p data-fr="Rivière Saskatchewan Nord (parcours principal), rivière Saskatchewan Sud près de Batoche (parcours de secours)." data-en="North Saskatchewan River (primary route), South Saskatchewan River near Batoche (alternate route).">Rivière Saskatchewan Nord (parcours principal), rivière Saskatchewan Sud près de Batoche (parcours de secours).</p>
+        </div>
+      </div>
+      <div class="event-item reveal">
+        <div class="edb"><div class="day">19</div><div class="month" data-fr="Sept" data-en="Sept">Sept</div></div>
+        <div class="event-info">
+          <h4 data-fr="Sentier Rotary et Little Red" data-en="Rotary Trail & Little Red">Sentier Rotary et Little Red</h4>
+          <p data-fr="Vélo de montagne sur le sentier Rotary de Prince Albert et à Little Red River Park, initiation au tournage cinématographique." data-en="Mountain biking on the Prince Albert Rotary Trail and at Little Red River Park, cinematic filming training.">Vélo de montagne sur le sentier Rotary de Prince Albert et à Little Red River Park, initiation au tournage cinématographique.</p>
+        </div>
+      </div>
+      <div class="event-item reveal">
+        <div class="edb"><div class="day">20</div><div class="month" data-fr="Sept" data-en="Sept">Sept</div></div>
+        <div class="event-info">
+          <h4 data-fr="Journée déconnexion à Ness Creek" data-en="Ness Creek Disconnect Day">Journée déconnexion à Ness Creek</h4>
+          <p data-fr="Séjour en chalet, déconnexion et observation, feu de camp, vol de drone si permis." data-en="Cabin stay, disconnecting and observing, campfire, drone flights where permitted.">Séjour en chalet, déconnexion et observation, feu de camp, vol de drone si permis.</p>
+        </div>
+      </div>
+      <div class="event-item reveal">
+        <div class="edb"><div class="day">21</div><div class="month" data-fr="Sept" data-en="Sept">Sept</div></div>
+        <div class="event-info">
+          <h4 data-fr="Retour et journée studio" data-en="Return & Studio Day">Retour et journée studio</h4>
+          <p data-fr="Organisation des images au Studio Gaétan-Benoit, entrevues, montage, souper de clôture chez Montana's." data-en="Footage organization at Studio Gaétan-Benoit, interviews, editing, closing supper at Montana's.">Organisation des images au Studio Gaétan-Benoit, entrevues, montage, souper de clôture chez Montana's.</p>
+        </div>
+      </div>
+      <div class="event-item reveal">
+        <div class="edb"><div class="day">22</div><div class="month" data-fr="Sept" data-en="Sept">Sept</div></div>
+        <div class="event-info">
+          <h4 data-fr="Départ" data-en="Departure">Départ</h4>
+          <p data-fr="Nettoyage et inspection, vérifications finales, transport vers l'aéroport." data-en="Cleaning and inspection, final checks, transport to the airport.">Nettoyage et inspection, vérifications finales, transport vers l'aéroport.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="safety">
+  <div class="inner">
+    <div class="s-label" data-fr="Toujours actif" data-en="Always On">Toujours actif</div>
+    <h2 class="s-title" data-fr="Sécurité" data-en="Safety">Sécurité</h2>
+    <div class="divider"></div>
+    <div class="safety-list">
+      <div class="safety-item reveal">
+        <div class="safety-line"></div>
+        <div>
+          <h4 data-fr="Système de partenaire" data-en="Buddy system">Système de partenaire</h4>
+          <p data-fr="En tout temps : sur les sentiers, sur l'eau et à Ness Creek." data-en="At all times: on the trail, on the water, and at Ness Creek.">En tout temps : sur les sentiers, sur l'eau et à Ness Creek.</p>
+        </div>
+      </div>
+      <div class="safety-item reveal">
+        <div class="safety-line"></div>
+        <div>
+          <h4 data-fr="Règle des trois accompagnateurs à vélo" data-en="Three-supervisor rule on bikes">Règle des trois accompagnateurs à vélo</h4>
+          <p data-fr="Un en tête, un au centre, un à l'arrière — personne ne dépasse le premier ni ne tombe derrière le dernier." data-en="One leads, one rides mid-pack, one sweeps — no passing the lead, no falling behind the sweep.">Un en tête, un au centre, un à l'arrière — personne ne dépasse le premier ni ne tombe derrière le dernier.</p>
+        </div>
+      </div>
+      <div class="safety-item reveal">
+        <div class="safety-line"></div>
+        <div>
+          <h4 data-fr="VFI et sécurité en eau froide" data-en="PFDs & cold-water safety">VFI et sécurité en eau froide</h4>
+          <p data-fr="VFI ajustés selon les consignes du chef de canot, avec breffage sur l'eau froide avant le départ." data-en="PFDs fitted exactly as the canoe leader instructs, with a cold-water safety briefing before launch.">VFI ajustés selon les consignes du chef de canot, avec breffage sur l'eau froide avant le départ.</p>
+        </div>
+      </div>
+      <div class="safety-item reveal">
+        <div class="safety-line"></div>
+        <div>
+          <h4 data-fr="Territoire d'ours à Ness Creek" data-en="Bear country at Ness Creek">Territoire d'ours à Ness Creek</h4>
+          <p data-fr="Nourriture, déchets et produits parfumés sécurisés chaque soir." data-en="Food, garbage and scented items secured every night.">Nourriture, déchets et produits parfumés sécurisés chaque soir.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="fly">
+  <div class="inner">
+    <div class="s-label" data-fr="À préparer" data-en="To Prepare">À préparer</div>
+    <h2 class="s-title" data-fr="Avant de t'envoler" data-en="Before You Fly">Avant de t'envoler</h2>
+    <div class="divider" style="background:linear-gradient(90deg,var(--orange),var(--gold));"></div>
+    <p class="s-desc" data-fr="Ces quatre éléments sont requis pour tout participant qui prend l'avion vers Prince Albert." data-en="These four items are required for every participant flying to Prince Albert.">Ces quatre éléments sont requis pour tout participant qui prend l'avion vers Prince Albert.</p>
+    <div class="fly-grid">
+      <div class="fly-item reveal" data-fr="Pièce d'identité avec photo" data-en="Government-issued ID">Pièce d'identité avec photo</div>
+      <div class="fly-item reveal" data-fr="Formulaire d'autorisation signé par un parent ou tuteur" data-en="Signed parent/guardian authorization form">Formulaire d'autorisation signé par un parent ou tuteur</div>
+      <div class="fly-item reveal" data-fr="Paiement de 100$ CAD par virement Interac à Scfpa@sasktel.net" data-en="$100 CAD payment by e-transfer to Scfpa@sasktel.net">Paiement de 100$ CAD par virement Interac à Scfpa@sasktel.net</div>
+      <div class="fly-item reveal" data-fr="Preuve de ce paiement, prête à montrer" data-en="Proof of that payment, ready to show">Preuve de ce paiement, prête à montrer</div>
+    </div>
+    <p class="fly-note"><span data-fr="Questions sur le paiement ou les documents? Écris à " data-en="Questions about payment or documents? Email ">Questions sur le paiement ou les documents? Écris à </span><a href="mailto:scfpa@sasktel.net">scfpa@sasktel.net</a></p>
+  </div>
+</section>
+
+<section id="meeting">
+  <div class="inner">
+    <div class="s-label" data-fr="Prochaine rencontre" data-en="Next Up">Prochaine rencontre</div>
+    <h2 class="s-title" data-fr="Appel de planification" data-en="Planning Call">Appel de planification</h2>
+    <div class="divider"></div>
+    <div class="meeting-banner reveal">
+      <div class="pulse-dot"></div>
+      <div class="meeting-text">
+        <strong data-fr="Mardi 25 août 2026 · 17 h 30 à 18 h 30 (heure de Regina)" data-en="Tuesday, August 25, 2026 · 5:30–6:30 p.m. (Regina time)">Mardi 25 août 2026 · 17 h 30 à 18 h 30 (heure de Regina)</strong>
+        <p>
+          Google Meet : <a href="https://meet.google.com/xmn-dnrz-khq" target="_blank" rel="noopener">meet.google.com/xmn-dnrz-khq</a><br/>
+          <span data-fr="Ou par téléphone : " data-en="Or by phone: ">Ou par téléphone : </span>(CA) +1 289-323-9798 · PIN 671 296 669#
+          — <a href="https://tel.meet/xmn-dnrz-khq?pin=9345092947470" target="_blank" rel="noopener" data-fr="autres numéros" data-en="more numbers">autres numéros</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pack">
+  <div class="inner">
+    <div class="s-label" data-fr="À apporter" data-en="What to Pack">À apporter</div>
+    <h2 class="s-title" data-fr="Liste de vérification — bagages" data-en="Packing Checklist">Liste de vérification — bagages</h2>
+    <div class="divider"></div>
+    <p class="s-desc" data-fr="Coche les articles au fur et à mesure — la liste est sauvegardée seulement sur cet appareil." data-en="Check items off as you go — the list is saved only on this device.">Coche les articles au fur et à mesure — la liste est sauvegardée seulement sur cet appareil.</p>
+
+    <div class="pack-grid" id="packGrid"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logos">
+    <img src="scfpa-logo.png" alt="SCFPA" onerror="this.style.display='none'"/>
+    <img src="voix-logo.png" alt="Voix Croisées" onerror="this.style.display='none'"/>
+  </div>
+  <p>© 2026 <strong>SCFPA</strong> — Société Canadienne-Française de Prince Albert &nbsp;·&nbsp;
+    <a href="mailto:scfpa@sasktel.net">scfpa@sasktel.net</a> &nbsp;·&nbsp;
+    <a href="tel:3067630337">306.763.0337</a> &nbsp;·&nbsp;
+    <a href="index.html#voix" data-fr="Retour à Voix Croisées" data-en="Back to Voix Croisées">Retour à Voix Croisées</a>
+  </p>
+</footer>
+
+<script>
+/* PACKING CHECKLIST DATA */
+var PACK_GROUPS = [
+  { title:{fr:"Vêtements",en:"Clothing"}, items:[
+    {fr:"Vêtements confortables pour l'extérieur (séchage rapide de préférence)", en:"Comfortable outdoor clothing (quick-dry preferred)"},
+    {fr:"Manteau de pluie / couche imperméable", en:"Rain jacket / waterproof layer"},
+    {fr:"Chandail ou polar pour les soirées et le feu de camp", en:"Sweater or fleece for evenings and the campfire"},
+    {fr:"Maillot de bain ou short séchage rapide pour le canot", en:"Swimwear or quick-dry shorts for the canoe day"},
+    {fr:"Chaussures fermées pour le vélo et la randonnée", en:"Closed-toe shoes for biking and hiking"},
+    {fr:"Sandales ou souliers d'eau pour le canot", en:"Water shoes or sandals for the canoe"},
+    {fr:"Chapeau de soleil et lunettes de soleil", en:"Sun hat and sunglasses"}
+  ]},
+  { title:{fr:"Équipement eau et sentier",en:"Water & Trail Gear"}, items:[
+    {fr:"Bouteille d'eau réutilisable, identifiée à ton nom", en:"Reusable water bottle, labeled with your name"},
+    {fr:"Gants de vélo, si tu en as", en:"Bike gloves, if you have them"},
+    {fr:"Petit sac à dos", en:"Small day backpack"},
+    {fr:"Serviette pour la journée de canot", en:"Towel for the canoe day"},
+    {fr:"Crème solaire et chasse-moustiques", en:"Sunscreen and bug spray"}
+  ]},
+  { title:{fr:"Nuit à Ness Creek",en:"Ness Creek Overnight"}, items:[
+    {fr:"Manteau chaud — les nuits en chalet à Ness Creek sont froides", en:"Warm jacket — cabin nights at Ness Creek get cold"},
+    {fr:"Chandail supplémentaire à porter en dessous", en:"Extra sweater to layer underneath"},
+    {fr:"Sac de couchage pour nuits fraîches", en:"Sleeping bag rated for cool nights"},
+    {fr:"Oreiller", en:"Pillow"},
+    {fr:"Lampe frontale ou de poche, avec piles supplémentaires", en:"Headlamp or flashlight, with extra batteries"},
+    {fr:"Tuque et gants chauds", en:"Warm hat and gloves"}
+  ]},
+  { title:{fr:"Documents et effets personnels",en:"Documents & Personal"}, items:[
+    {fr:"Formulaire de consentement signé (ou déjà au dossier)", en:"Signed waiver / consent form (or already on file)"},
+    {fr:"Renseignements médicaux ou médicaments, bien identifiés", en:"Any medical information or medication, clearly labeled"},
+    {fr:"Carte santé / documents de voyage", en:"Health card / travel documents"},
+    {fr:"Carnet pour tes notes et questions d'entrevue", en:"Journal or notebook for interview notes"}
+  ]}
+];
+
+function getChecked(id){ try{ return localStorage.getItem('scfpa_sk_'+id)==='1'; }catch(e){ return false; } }
+function setChecked(id,v){ try{ localStorage.setItem('scfpa_sk_'+id, v?'1':'0'); }catch(e){} }
+
+var packGrid = document.getElementById('packGrid');
+PACK_GROUPS.forEach(function(group, gi){
+  var card = document.createElement('div');
+  card.className = 'form-card reveal';
+
+  var h3 = document.createElement('h3');
+  var titleSpan = document.createElement('span');
+  titleSpan.setAttribute('data-fr', group.title.fr);
+  titleSpan.setAttribute('data-en', group.title.en);
+  titleSpan.textContent = group.title.fr;
+  var countSpan = document.createElement('span');
+  countSpan.className = 'count';
+  h3.appendChild(titleSpan);
+  h3.appendChild(countSpan);
+  card.appendChild(h3);
+
+  var ul = document.createElement('div');
+  ul.className = 'check-group';
+
+  group.items.forEach(function(item, ii){
+    var id = 'p' + gi + '-' + ii;
+    var label = document.createElement('label');
+    label.className = 'check-item';
+
+    var input = document.createElement('input');
+    input.type = 'checkbox';
+    input.checked = getChecked(id);
+
+    var span = document.createElement('span');
+    span.setAttribute('data-fr', item.fr);
+    span.setAttribute('data-en', item.en);
+    span.textContent = item.fr;
+    if(input.checked) span.classList.add('done');
+
+    input.addEventListener('change', function(){
+      setChecked(id, input.checked);
+      span.classList.toggle('done', input.checked);
+      updateCount();
+    });
+
+    label.appendChild(input);
+    label.appendChild(span);
+    ul.appendChild(label);
+  });
+
+  card.appendChild(ul);
+  packGrid.appendChild(card);
+
+  function updateCount(){
+    var total = group.items.length, done = 0;
+    ul.querySelectorAll('input:checked').forEach(function(){ done++; });
+    countSpan.textContent = done + '/' + total;
+  }
+  updateCount();
+});
+
+/* LANGUAGE — same pattern as scfpa.ca */
+let lang = 'fr';
+function setLang(l){
+  lang = l;
+  document.querySelectorAll('.lang-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.querySelector('.lang-btn[onclick="setLang(\''+l+'\')"]').classList.add('active');
+  document.querySelectorAll('[data-fr]').forEach(function(el){
+    var v = el.getAttribute('data-'+l);
+    if(!v) return;
+    if(el.tagName==='INPUT'||el.tagName==='TEXTAREA') el.placeholder = v;
+    else el.innerHTML = v;
+  });
+  document.documentElement.lang = l;
+}
+
+/* REVEAL */
+var obs = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('visible'); });
+}, {threshold:.1});
+document.querySelectorAll('.reveal').forEach(function(el){ obs.observe(el); });
+</script>
+
+</body>
+</html>
