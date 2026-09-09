@@ -106,6 +106,7 @@
     /* ── EVENTS ── */
     #events{background:linear-gradient(180deg,rgba(45,106,46,.06) 0%,transparent 100%);}
     .event-list{display:flex;flex-direction:column;gap:12px;margin-bottom:32px;}
+    .event-list>[data-jamfam-generated]{display:contents;}
     .event-item{display:flex;align-items:center;gap:18px;background:var(--card);border:1px solid rgba(245,168,0,.1);border-radius:var(--radius);padding:18px 24px;transition:transform .2s,border-color .2s;cursor:pointer;}
     .event-item:hover{transform:translateX(5px);border-color:rgba(245,168,0,.3);}
     .edb{min-width:58px;text-align:center;border-radius:10px;padding:9px 7px;background:linear-gradient(135deg,var(--green),var(--orange));}
@@ -116,6 +117,19 @@
     .ebadge{margin-left:auto;border-radius:20px;padding:3px 12px;font-size:.72rem;font-weight:800;white-space:nowrap;background:rgba(245,168,0,.12);color:var(--gold);}
     .calendar-embed{border-radius:var(--radius);overflow:hidden;border:1px solid rgba(245,168,0,.1);margin-top:32px;}
     .calendar-embed iframe{width:100%;border:none;display:block;}
+    .hub-calendar{padding:22px;background:var(--card);min-height:220px;}
+    .hub-calendar-month{margin-bottom:28px;}
+    .hub-calendar-month:last-child{margin-bottom:0;}
+    .hub-calendar-heading{font-family:'Bebas Neue',sans-serif;font-size:1.45rem;color:var(--gold);letter-spacing:.04em;margin-bottom:12px;}
+    .hub-calendar-weekdays,.hub-calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;}
+    .hub-calendar-weekdays span{text-align:center;color:var(--muted);font-size:.65rem;font-weight:800;text-transform:uppercase;padding:4px;}
+    .hub-calendar-day{min-height:76px;padding:7px;border-radius:9px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.055);font-size:.72rem;overflow:hidden;}
+    .hub-calendar-day.empty{background:transparent;border-color:transparent;}
+    .hub-calendar-number{display:block;color:var(--muted);font-weight:800;margin-bottom:5px;}
+    .hub-calendar-event{display:block;padding:4px 5px;border-radius:5px;background:rgba(245,168,0,.14);color:var(--gold);font-size:.62rem;font-weight:700;line-height:1.25;overflow-wrap:anywhere;}
+    .event-item,.event-info{min-width:0;}
+    .event-info h4,.event-info p{overflow-wrap:anywhere;}
+    @media(max-width:620px){.hub-calendar{padding:13px}.hub-calendar-weekdays,.hub-calendar-grid{gap:3px}.hub-calendar-day{min-height:56px;padding:4px}.hub-calendar-event{font-size:0;width:7px;height:7px;padding:0;border-radius:50%}.hub-calendar-number{font-size:.66rem}.event-item{align-items:flex-start;padding:15px}.ebadge{margin-left:0}}
 
     /* ── VOIX CROISÉES ── */
     #voix{background:linear-gradient(180deg,rgba(15,61,26,.5) 0%,rgba(12,15,10,.9) 100%);border-top:1px solid rgba(30,107,48,.3);border-bottom:1px solid rgba(30,107,48,.3);}
@@ -330,17 +344,17 @@
       <p style="font-size:.9rem;"><strong style="color:var(--voix-light);" data-fr="Voix Croisées — Fin des candidatures :" data-en="Voix Croisées — Application Deadline:">Voix Croisées — Fin des candidatures :</strong> <span data-fr="vendredi 3 juillet 2026" data-en="Friday, July 3, 2026">vendredi 3 juillet 2026</span></p>
     </div>
 
-    <div class="event-list">
+    <div class="event-list" data-jamfam-collection="events.items">
       <div class="event-item reveal">
-        <div class="edb" style="background:linear-gradient(135deg,var(--voix-green),var(--voix-light));"><div class="day">17</div><div class="month" data-fr="Sept" data-en="Sept">Sept</div></div>
+        <div class="edb"><div class="day">17</div><div class="month" data-fr="Sept" data-en="Sept">Sept</div></div>
         <div class="event-info">
           <h4 data-fr="Voix Croisées — Segment Saskatchewan" data-en="Voix Croisées — Saskatchewan Segment">Voix Croisées — Segment Saskatchewan</h4>
           <p data-fr="Prince Albert · 17–22 septembre 2026" data-en="Prince Albert · Sept 17–22, 2026">Prince Albert · 17–22 septembre 2026</p>
         </div>
-        <div class="ebadge" style="color:var(--voix-light);">Voix Croisées</div>
+        <div class="ebadge">Voix Croisées</div>
       </div>
       <div class="event-item reveal">
-        <div class="edb" style="background:linear-gradient(135deg,var(--green),var(--green-light));"><div class="day">6</div><div class="month" data-fr="Nov" data-en="Nov">Nov</div></div>
+        <div class="edb"><div class="day">6</div><div class="month" data-fr="Nov" data-en="Nov">Nov</div></div>
         <div class="event-info">
           <h4>Rendez-Vous Fransaskois</h4>
           <p data-fr="Prince Albert · 6–8 novembre 2026" data-en="Prince Albert · Nov 6–8, 2026">Prince Albert · 6–8 novembre 2026</p>
@@ -348,13 +362,24 @@
         <div class="ebadge" data-fr="Festival" data-en="Festival">Festival</div>
       </div>
       <div class="event-item reveal">
-        <div class="edb" style="background:linear-gradient(135deg,var(--studio-red),var(--studio-yellow));"><div class="day">29</div><div class="month" data-fr="Nov" data-en="Nov">Nov</div></div>
+        <div class="edb"><div class="day">29</div><div class="month" data-fr="Nov" data-en="Nov">Nov</div></div>
         <div class="event-info">
           <h4 data-fr="Souper de Noël — La Légende de Calamity Jane" data-en="Christmas Dinner — La Légende de Calamity Jane">Souper de Noël — La Légende de Calamity Jane</h4>
           <p data-fr="Prince Albert · Souper spectacle" data-en="Prince Albert · Dinner show">Prince Albert · Souper spectacle</p>
         </div>
         <div class="ebadge" data-fr="Spectacle" data-en="Show">Spectacle</div>
       </div>
+      <template>
+        <article class="event-item">
+          <div class="edb"><div class="day" data-jamfam-item="date"></div><div class="month"></div></div>
+          <div class="event-info">
+            <h4 data-jamfam-item-en="title_en" data-jamfam-item-fr="title_fr"></h4>
+            <p class="event-meta"><span data-jamfam-item="venue"></span><span data-jamfam-item="address"></span><span data-jamfam-item-en="time_en" data-jamfam-item-fr="time_fr"></span></p>
+          </div>
+          <div class="ebadge" data-jamfam-item="status"></div>
+          <a class="btn btn-outline event-ticket" data-jamfam-item="ticket_url" data-fr="Détails" data-en="Details">Détails</a>
+        </article>
+      </template>
     </div>
 
     <div style="text-align:center;margin-bottom:40px;">
@@ -362,7 +387,9 @@
     </div>
 
     <div class="calendar-embed reveal">
-      <iframe src="https://calendar.google.com/calendar/embed?height=500&wkst=1&bgcolor=%230e1a0f&ctz=America%2FRegina&src=Y29vcmRpbmF0aW9uc2NmcGFAc2Fza3RlbC5uZXQ&src=ZW4uY2FuYWRpYW4jaG9saWRheUBncm91cC52LmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23F5A800&color=%234A9E3F" height="500" scrolling="no"></iframe>
+      <div id="hub-events-calendar" class="hub-calendar" aria-live="polite">
+        <iframe src="https://calendar.google.com/calendar/embed?height=500&wkst=1&bgcolor=%230e1a0f&ctz=America%2FRegina&src=Y29vcmRpbmF0aW9uc2NmcGFAc2Fza3RlbC5uZXQ&src=ZW4uY2FuYWRpYW4jaG9saWRheUBncm91cC52LmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23F5A800&color=%234A9E3F" height="500" scrolling="no" title="Calendrier SCFPA"></iframe>
+      </div>
     </div>
   </div>
 </section>
@@ -715,15 +742,15 @@
         <div class="newsletter-thumb">
           <div class="newsletter-thumb-inner">
             <div style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--gold);">Le Ruisselet</div>
-            <div style="font-size:.78rem;color:var(--muted);margin-top:4px;">Mai 2026</div>
+            <div style="font-size:.78rem;color:var(--muted);margin-top:4px;" data-jamfam-field="newsletter.issue_date">Mai 2026</div>
           </div>
         </div>
         <div class="newsletter-body">
-          <h4 data-fr="Le Ruisselet — Mai 2026" data-en="Le Ruisselet — May 2026">Le Ruisselet — Mai 2026</h4>
+          <h4 data-jamfam-field="newsletter.issue_title">Le Ruisselet — Mai 2026</h4>
           <p data-fr="Nouvelles de la communauté, événements à venir et plus." data-en="Community news, upcoming events and more.">Nouvelles de la communauté, événements à venir et plus.</p>
           <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
-            <a href="#" onclick="openPDF('ruisselet-mai-2026.pdf'); return false;" class="btn btn-green" style="padding:8px 18px;font-size:.8rem;" data-fr="Lire" data-en="Read">Lire</a>
-            <a href="ruisselet-mai-2026.pdf" download class="btn btn-outline" style="padding:8px 18px;font-size:.8rem;" data-fr="Télécharger" data-en="Download">Télécharger</a>
+            <a href="ruisselet-mai-2026.pdf" data-jamfam-field="newsletter.pdf_url" onclick="openPDF(this.href); return false;" class="btn btn-green" style="padding:8px 18px;font-size:.8rem;" data-fr="Lire" data-en="Read">Lire</a>
+            <a href="ruisselet-mai-2026.pdf" data-jamfam-field="newsletter.pdf_url" download class="btn btn-outline" style="padding:8px 18px;font-size:.8rem;" data-fr="Télécharger" data-en="Download">Télécharger</a>
           </div>
         </div>
       </div>
@@ -1020,6 +1047,43 @@ function closePDF(){
   document.body.style.overflow='';
 }
 
+/* JAMFAM EVENTS CALENDAR */
+document.addEventListener('jamfam:content-loaded',function(event){
+  const field=(event.detail.fields||[]).find(f=>f.page_key==='events'&&f.field_key==='items');
+  if(!field)return;
+  let items=[];try{items=JSON.parse(field.value||'[]');}catch{return;}
+  items=items.filter(item=>item&&item._offline!==true&&/^\d{4}-\d{2}-\d{2}$/.test(item.date||''));
+  const calendar=document.getElementById('hub-events-calendar');
+  if(!calendar||!items.length)return;
+  const locale=document.documentElement.lang==='fr'?'fr-CA':'en-CA';
+  const groups=new Map();
+  items.sort((a,b)=>a.date.localeCompare(b.date)).forEach(item=>{const key=item.date.slice(0,7);if(!groups.has(key))groups.set(key,[]);groups.get(key).push(item);});
+  document.querySelectorAll('.event-list>[data-jamfam-generated] .event-item').forEach((card,index)=>{
+    const item=items[index];if(!item)return;
+    const date=new Date(item.date+'T00:00:00Z');
+    const day=card.querySelector('.day');const month=card.querySelector('.month');
+    if(day)day.textContent=String(date.getUTCDate());
+    if(month)month.textContent=new Intl.DateTimeFormat(locale,{month:'short',timeZone:'UTC'}).format(date).replace('.','');
+    const meta=card.querySelector('.event-meta');
+    if(meta){
+      const french=locale==='fr-CA';
+      const values=[item.venue,item.address,french?(item.time_fr||item.time_en):(item.time_en||item.time_fr)].filter(Boolean);
+      meta.textContent=values.join(' · ');
+      meta.hidden=!values.length;
+    }
+  });
+  const weekdays=locale==='fr-CA'?['Dim','Lun','Mar','Mer','Jeu','Ven','Sam']:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  calendar.innerHTML=[...groups.entries()].map(([key,monthItems])=>{
+    const [year,month]=key.split('-').map(Number);const first=new Date(Date.UTC(year,month-1,1));const days=new Date(Date.UTC(year,month,0)).getUTCDate();
+    const byDay=new Map(monthItems.map(item=>[Number(item.date.slice(8,10)),item]));let cells='';
+    for(let i=0;i<first.getUTCDay();i++)cells+='<div class="hub-calendar-day empty"></div>';
+    for(let day=1;day<=days;day++){const item=byDay.get(day);const title=locale==='fr-CA'?(item?.title_fr||item?.title_en):(item?.title_en||item?.title_fr);cells+=`<div class="hub-calendar-day"><span class="hub-calendar-number">${day}</span>${item?`<span class="hub-calendar-event">${escapeCalendar(title||'Événement')}</span>`:''}</div>`;}
+    const heading=new Intl.DateTimeFormat(locale,{month:'long',year:'numeric',timeZone:'UTC'}).format(first);
+    return `<section class="hub-calendar-month"><h3 class="hub-calendar-heading">${heading}</h3><div class="hub-calendar-weekdays">${weekdays.map(d=>`<span>${d}</span>`).join('')}</div><div class="hub-calendar-grid">${cells}</div></section>`;
+  }).join('');
+});
+function escapeCalendar(value){const node=document.createElement('div');node.textContent=value||'';return node.innerHTML;}
+
 /* REVEAL */
 const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.1});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
@@ -1032,5 +1096,6 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
   formspree('initForm', { formElement: '#contact-form', formId: 'mwvzggvn' });
 </script>
 <script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+<script src="https://jamfam-client-hub.onrender.com/jamfam-content.js" data-site-id="aa6c860a-b745-41f0-84cb-062804ff09a7" defer></script>
 </body>
 </html>
